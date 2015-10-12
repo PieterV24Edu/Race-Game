@@ -22,3 +22,4 @@ after that git will save your credentials and you wont have to enter them again.
 mark all your files (New files or edited files or removed files) as staged by typing: "git add FILENAME"
 
 after that type: "git commit -m MESSAGE"
+
