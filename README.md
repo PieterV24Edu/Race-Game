@@ -30,3 +30,19 @@ in this YOUR_BRANCH_NAME will always be your name to add it to your branch.
 unless you want to add the code directly to the main branch but this is highly unlikely.
 
 once in a while we will merge all branches to test or evaluate the code.
+
+<b>Adding the current main code from the master branch to your branch</b>
+
+Type: "git checkout YOUR_BRANCH_NAME"
+
+now to merge the master branch to your branch type: "git merge master"
+
+now your code is merged with the main branch and you can go on.
+
+<b>Adding your code to the shared repository</b> 
+
+type: "git push origin YOUR_BRANCH_NAME"
+
+never type master here.
+
+merging with the master will only be done with the group.
