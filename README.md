@@ -23,3 +23,10 @@ mark all your files (New files or edited files or removed files) as staged by ty
 
 after that type: "git commit -m MESSAGE"
 
+to add your commit to the shared repository type: "git push origin YOUR_BRANCH_NAME"
+
+in this YOUR_BRANCH_NAME will always be your name to add it to your branch.
+
+unless you want to add the code directly to the main branch but this is highly unlikely.
+
+once in a while we will merge all branches to test or evaluate the code.
