@@ -59,7 +59,8 @@ namespace RaceGame
             }
             else if (e.KeyCode == Keys.S)
             {
-                BlockSpeed.Y = DefaultBlockspeed;
+                BlockSpeed.Y = -Convert.ToInt32(DefaultBlockspeed * (Math.Sin(DegtoRad(angle))));
+                BlockSpeed.X = -Convert.ToInt32(DefaultBlockspeed * (Math.Cos(DegtoRad(angle))));
             }
         }
         void Form1_KeyUp(object sender, KeyEventArgs e)
@@ -72,6 +73,7 @@ namespace RaceGame
             else if (e.KeyCode == Keys.S)
             {
                 BlockSpeed.Y = 0;
+                BlockSpeed.X = 0;
             }
         }
         void Form1_Paint(object sender, PaintEventArgs e)
