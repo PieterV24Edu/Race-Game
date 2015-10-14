@@ -15,8 +15,13 @@ namespace RaceGame
         Bitmap Backbuffer;
         Point Blockpoint = new Point(50, 50);
         Point BlockSpeed = new Point(0, 0);
+
+        int holdTimer = 0;
+        int currentSpeed = 5;
+        int maxSpeed = 10;
         int DefaultBlockspeed = 10;
-        bool W = false, A = false, S = false, D = false;
+
+        List<Keys> keysPressed = new List<Keys>(4);
 
         public Form1()
         {
@@ -38,64 +43,88 @@ namespace RaceGame
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
             this.KeyUp += new KeyEventHandler(Form1_KeyUp);
         }
+
         void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.A)
+            if (!keysPressed.Contains(e.KeyCode))
             {
-                BlockSpeed.X = -DefaultBlockspeed;
-                A = true;
+                keysPressed.Add(e.KeyCode);
             }
-            else if (e.KeyCode == Keys.D)
+            else
             {
-                BlockSpeed.X = DefaultBlockspeed;
-                D = true;
+                holdTimer ++;
             }
-            else if (e.KeyCode == Keys.W)
+
+
+            foreach (Keys keyPressed in keysPressed)
             {
-                BlockSpeed.Y = -DefaultBlockspeed;
-                W = true;
+                switch (keyPressed)
+                {
+                    case Keys.A:
+                        BlockSpeed.X = -currentSpeed;
+
+                        if (holdTimer > 0)
+                        {
+                            currentSpeed++;
+                        }
+                        break;
+                    case Keys.D:
+                        BlockSpeed.X = currentSpeed;
+
+                        if (holdTimer > 0)
+                        {
+                            currentSpeed++;
+                        }
+                        break;
+                    case Keys.W:
+                        BlockSpeed.Y = -currentSpeed;
+
+                        if (holdTimer > 0)
+                        {
+                            currentSpeed++;
+                        }
+                        break;
+                    case Keys.S:
+                        BlockSpeed.Y = currentSpeed;
+
+                        if (holdTimer > 0)
+                        {
+                            currentSpeed++;
+                        }
+                        break;
+
+                }
             }
-            else if (e.KeyCode == Keys.S)
-            {
-                BlockSpeed.Y = DefaultBlockspeed;
-                S = true;
-            }
+
         }
+
         void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.A)
-            {
-                if(A == true)
+
+                foreach (Keys keyPressed in keysPressed)
                 {
-                    BlockSpeed.X += DefaultBlockspeed;
-                    A = false;
+                    switch (keyPressed)
+                    {
+                        case Keys.A:
+                            BlockSpeed.Y = 0;
+                            break;
+                        case Keys.D:
+                            BlockSpeed.X = 0;
+                            break;
+                        case Keys.W:
+                            BlockSpeed.Y = 0;
+                            break;
+                        case Keys.S:
+                            BlockSpeed.Y = 0;
+                            break;
+
+                    }
                 }
-            }
-            else if (e.KeyCode != Keys.D)
-            {
-                if (D == true)
-                {
-                    BlockSpeed.X += -DefaultBlockspeed;
-                    D = false;
-                }
-            }
-            else if (e.KeyCode != Keys.W)
-            {
-                if (W == true)
-                {
-                    BlockSpeed.Y += DefaultBlockspeed;
-                    W = false;
-                }
-            }
-            else if (e.KeyCode != Keys.S)
-            {
-                if (S == true)
-                {
-                    BlockSpeed.Y += -DefaultBlockspeed;
-                    S = false;
-                }
-            }
+            currentSpeed = 5;
+            keysPressed.Remove(e.KeyCode);
+
         }
+
         void Form1_Paint(object sender, PaintEventArgs e)
         {
            if (Backbuffer != null)
@@ -103,6 +132,7 @@ namespace RaceGame
                 e.Graphics.DrawImageUnscaled(Backbuffer, Point.Empty);
             }
         }
+
         void Form1_CreateBackBuffer(object sender, EventArgs e)
         {
             if(Backbuffer != null)
@@ -111,6 +141,7 @@ namespace RaceGame
             }
             Backbuffer = new Bitmap(ClientSize.Width, ClientSize.Height);
         }
+
         void Draw()
         {
             if (Backbuffer != null)
@@ -128,6 +159,11 @@ namespace RaceGame
             Blockpoint.X += BlockSpeed.X;
             Blockpoint.Y += BlockSpeed.Y;
             Draw();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
