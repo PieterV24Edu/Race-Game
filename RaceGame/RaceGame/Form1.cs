@@ -16,7 +16,8 @@ namespace RaceGame
         Point Blockpoint = new Point(50, 50);
         Point BlockSpeed = new Point(0, 0);
         int DefaultBlockspeed = 10;
-        bool W = false, A = false, S = false, D = false;
+        float angle;
+        int[] size = new int[2] {20, 20};
 
         public Form1()
         {
@@ -42,58 +43,40 @@ namespace RaceGame
         {
             if (e.KeyCode == Keys.A)
             {
-                BlockSpeed.X = -DefaultBlockspeed;
-                A = true;
+                //BlockSpeed.X = -DefaultBlockspeed;
+                angle += -1f;
             }
             else if (e.KeyCode == Keys.D)
             {
-                BlockSpeed.X = DefaultBlockspeed;
-                D = true;
+                //BlockSpeed.X = DefaultBlockspeed;
+                angle += 1f;
             }
             else if (e.KeyCode == Keys.W)
             {
                 BlockSpeed.Y = -DefaultBlockspeed;
-                W = true;
             }
             else if (e.KeyCode == Keys.S)
             {
                 BlockSpeed.Y = DefaultBlockspeed;
-                S = true;
             }
         }
         void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.A)
+            if (e.KeyCode == Keys.A)
             {
-                if(A == true)
-                {
-                    BlockSpeed.X += DefaultBlockspeed;
-                    A = false;
-                }
+                BlockSpeed.X = 0;
             }
-            else if (e.KeyCode != Keys.D)
+            else if (e.KeyCode == Keys.D)
             {
-                if (D == true)
-                {
-                    BlockSpeed.X += -DefaultBlockspeed;
-                    D = false;
-                }
+                BlockSpeed.X = 0;
             }
-            else if (e.KeyCode != Keys.W)
+            else if (e.KeyCode == Keys.W)
             {
-                if (W == true)
-                {
-                    BlockSpeed.Y += DefaultBlockspeed;
-                    W = false;
-                }
+                BlockSpeed.Y = 0;
             }
-            else if (e.KeyCode != Keys.S)
+            else if (e.KeyCode == Keys.S)
             {
-                if (S == true)
-                {
-                    BlockSpeed.Y += -DefaultBlockspeed;
-                    S = false;
-                }
+                BlockSpeed.Y = 0;
             }
         }
         void Form1_Paint(object sender, PaintEventArgs e)
@@ -118,7 +101,10 @@ namespace RaceGame
                 using (var g = Graphics.FromImage(Backbuffer))
                 {
                     g.Clear(Color.White);
-                    g.FillRectangle(Brushes.BlueViolet, Blockpoint.X, Blockpoint.Y, 20, 20);
+                    g.TranslateTransform(Blockpoint.X - size[0]/2.0f, Blockpoint.Y - size[1] / 2.0f);
+                    g.RotateTransform(angle);
+                    g.TranslateTransform(-Blockpoint.X - size[0] / 2.0f, -Blockpoint.Y - size[1] / 2.0f);
+                    g.FillRectangle(Brushes.BlueViolet, Blockpoint.X, Blockpoint.Y, size[0], size[1]);
                 }
                 Invalidate();
             }
