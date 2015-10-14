@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace RaceGame
                 ControlStyles.DoubleBuffer, true);
 
             Timer GameTimer = new Timer();
-            GameTimer.Interval = 10;
+            GameTimer.Interval = 1;
             GameTimer.Tick += new EventHandler(GameTimer_Tick);
             GameTimer.Start();
 
@@ -44,16 +45,17 @@ namespace RaceGame
             if (e.KeyCode == Keys.A)
             {
                 //BlockSpeed.X = -DefaultBlockspeed;
-                angle += -1f;
+                angle += -10f;
             }
             else if (e.KeyCode == Keys.D)
             {
                 //BlockSpeed.X = DefaultBlockspeed;
-                angle += 1f;
+                angle += 10f;
             }
             else if (e.KeyCode == Keys.W)
             {
-                BlockSpeed.Y = -DefaultBlockspeed;
+                BlockSpeed.Y = Convert.ToInt32(DefaultBlockspeed * (Math.Sin(DegtoRad(angle))));
+                BlockSpeed.X = Convert.ToInt32(DefaultBlockspeed * (Math.Cos(DegtoRad(angle))));
             }
             else if (e.KeyCode == Keys.S)
             {
@@ -62,17 +64,10 @@ namespace RaceGame
         }
         void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.A)
-            {
-                BlockSpeed.X = 0;
-            }
-            else if (e.KeyCode == Keys.D)
-            {
-                BlockSpeed.X = 0;
-            }
-            else if (e.KeyCode == Keys.W)
+            if (e.KeyCode == Keys.W)
             {
                 BlockSpeed.Y = 0;
+                BlockSpeed.X = 0;
             }
             else if (e.KeyCode == Keys.S)
             {
@@ -108,6 +103,11 @@ namespace RaceGame
                 }
                 Invalidate();
             }
+        }
+
+        double DegtoRad(double deg)
+        {
+            return (Math.PI/180)*deg;
         }
         void GameTimer_Tick(object sender, EventArgs e)
         {
