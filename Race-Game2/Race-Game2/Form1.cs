@@ -15,6 +15,11 @@ namespace Race_Game2
         public Form1()
         {
             InitializeComponent();
+            Bitmap Backbuffer;
+            Point Blockpoint = new Point(50, 50);
+            Point BlockSpeed = new Point(0, 0);
+            int DefaultBlockspeed = 10;
+            float angle;
         }
     }
 }

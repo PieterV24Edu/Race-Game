@@ -19,6 +19,7 @@ namespace RaceGame
         int DefaultBlockspeed = 10;
         float angle;
         int[] size = new int[2] {20, 20};
+        bool Moving = false;
 
         public Form1()
         {
@@ -30,7 +31,7 @@ namespace RaceGame
                 ControlStyles.DoubleBuffer, true);
 
             Timer GameTimer = new Timer();
-            GameTimer.Interval = 1;
+            GameTimer.Interval = 10;
             GameTimer.Tick += new EventHandler(GameTimer_Tick);
             GameTimer.Start();
 
@@ -44,23 +45,30 @@ namespace RaceGame
         {
             if (e.KeyCode == Keys.A)
             {
-                //BlockSpeed.X = -DefaultBlockspeed;
-                angle += -10f;
+                if (Moving == true)
+                {
+                    angle += -10f;
+                }
             }
-            else if (e.KeyCode == Keys.D)
+            if (e.KeyCode == Keys.D)
             {
-                //BlockSpeed.X = DefaultBlockspeed;
-                angle += 10f;
+                if (Moving == true)
+                {
+                    angle += 10f;
+                }
             }
-            else if (e.KeyCode == Keys.W)
+            if (e.KeyCode == Keys.W)
             {
                 BlockSpeed.Y = Convert.ToInt32(DefaultBlockspeed * (Math.Sin(DegtoRad(angle))));
                 BlockSpeed.X = Convert.ToInt32(DefaultBlockspeed * (Math.Cos(DegtoRad(angle))));
+                Moving = true;
+                Debug.Print("Press {0}, {1}", BlockSpeed.X, BlockSpeed.Y);
             }
-            else if (e.KeyCode == Keys.S)
+            if (e.KeyCode == Keys.S)
             {
                 BlockSpeed.Y = -Convert.ToInt32(DefaultBlockspeed * (Math.Sin(DegtoRad(angle))));
                 BlockSpeed.X = -Convert.ToInt32(DefaultBlockspeed * (Math.Cos(DegtoRad(angle))));
+                Moving = true;
             }
         }
         void Form1_KeyUp(object sender, KeyEventArgs e)
@@ -69,11 +77,13 @@ namespace RaceGame
             {
                 BlockSpeed.Y = 0;
                 BlockSpeed.X = 0;
+                Moving = false;
             }
-            else if (e.KeyCode == Keys.S)
+            if (e.KeyCode == Keys.S)
             {
                 BlockSpeed.Y = 0;
                 BlockSpeed.X = 0;
+                Moving = false;
             }
         }
         void Form1_Paint(object sender, PaintEventArgs e)
@@ -110,6 +120,24 @@ namespace RaceGame
         double DegtoRad(double deg)
         {
             return (Math.PI/180)*deg;
+        }
+
+        Point Move(double speed, double angle2, string direction)
+        {
+            int py = Convert.ToInt32(speed * (Math.Sin(DegtoRad(angle2))));
+            int px = Convert.ToInt32(speed * (Math.Cos(DegtoRad(angle2))));
+            if (direction == "Forw")
+            {
+                return new Point(py, px);
+            }
+            else if (direction == "Backw")
+            {
+                return new Point(-py, -px);
+            }
+            else
+            {
+                return new Point(0, 0);
+            }
         }
         void GameTimer_Tick(object sender, EventArgs e)
         {
