@@ -122,7 +122,7 @@ namespace RaceGame
             return (Math.PI/180)*deg;
         }
 
-        Point Move(double speed, double angle2, string direction)
+        Point CalcMovePoint(double speed, double angle2, string direction)
         {
             int py = Convert.ToInt32(speed * (Math.Sin(DegtoRad(angle2))));
             int px = Convert.ToInt32(speed * (Math.Cos(DegtoRad(angle2))));
