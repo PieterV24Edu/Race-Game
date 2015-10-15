@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,11 +19,19 @@ namespace RaceGame
         Point BlockSpeed = new Point(0, 0);
 
         int holdTimer = 0;
-        int currentSpeed = 5;
+        int currentSpeed = 0;
         int maxSpeed = 10;
-        int DefaultBlockspeed = 10;
 
         List<Keys> keysPressed = new List<Keys>(4);
+
+        float angle;
+        int[] size = new int[2] {40, 20};
+        bool Moving = false;
+
+        Image car1 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carCyan.png"));
+        Image car2 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carDarkGreen.png"));
+
+        Image backImage = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carcircuit.png"));
 
         public Form1()
         {
@@ -42,6 +52,8 @@ namespace RaceGame
             this.Paint += new PaintEventHandler(Form1_Paint);
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
             this.KeyUp += new KeyEventHandler(Form1_KeyUp);
+
+            Auto.Image = car1;
         }
 
         void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -61,68 +73,52 @@ namespace RaceGame
                 switch (keyPressed)
                 {
                     case Keys.A:
-                        BlockSpeed.X = -currentSpeed;
-
-                        if (holdTimer > 0)
+                        if (Moving == true)
                         {
-                            currentSpeed++;
+                            angle += -10f;
                         }
+
                         break;
                     case Keys.D:
-                        BlockSpeed.X = currentSpeed;
-
-                        if (holdTimer > 0)
+                        if (Moving == true)
                         {
-                            currentSpeed++;
+                            angle += 10f;
                         }
+
                         break;
                     case Keys.W:
-                        BlockSpeed.Y = -currentSpeed;
-
-                        if (holdTimer > 0)
+                        //current speed implement
+                        if (currentSpeed < maxSpeed)
                         {
-                            currentSpeed++;
+                            currentSpeed ++;
                         }
+                        BlockSpeed = CalcMovePoint(currentSpeed, angle);
+                        Moving = true;
+
                         break;
                     case Keys.S:
-                        BlockSpeed.Y = currentSpeed;
-
-                        if (holdTimer > 0)
+                        if (currentSpeed < maxSpeed)
                         {
                             currentSpeed++;
                         }
+                        BlockSpeed = CalcMovePoint(-currentSpeed, angle);
+                        Moving = true;
                         break;
 
                 }
             }
-
         }
 
         void Form1_KeyUp(object sender, KeyEventArgs e)
         {
+            if(keysPressed.Contains(e.KeyCode))
+                keysPressed.Remove(e.KeyCode);
 
-                foreach (Keys keyPressed in keysPressed)
-                {
-                    switch (keyPressed)
-                    {
-                        case Keys.A:
-                            BlockSpeed.Y = 0;
-                            break;
-                        case Keys.D:
-                            BlockSpeed.X = 0;
-                            break;
-                        case Keys.W:
-                            BlockSpeed.Y = 0;
-                            break;
-                        case Keys.S:
-                            BlockSpeed.Y = 0;
-                            break;
 
-                    }
-                }
-            currentSpeed = 5;
-            keysPressed.Remove(e.KeyCode);
-
+            if (!keysPressed.Contains(Keys.S) && !keysPressed.Contains(Keys.W))
+            {
+                SlowDown();
+            }
         }
 
         void Form1_Paint(object sender, PaintEventArgs e)
@@ -148,20 +144,62 @@ namespace RaceGame
             {
                 using (var g = Graphics.FromImage(Backbuffer))
                 {
-                    g.Clear(Color.White);
-                    g.FillRectangle(Brushes.BlueViolet, Blockpoint.X, Blockpoint.Y, 20, 20);
+                    g.Clear(Color.Green);
+                    g.DrawImage(backImage, 0, 10, 1000, 700);
+
+                    //tempPoint.Y += CalcMovePoint(currentSpeed, angle).Y;
+                    //tempPoint.X += CalcMovePoint(currentSpeed, angle).X;
+
+                    MoveCar();
+                    //g.TranslateTransform(Blockpoint.X - size[0]/2.0f, Blockpoint.Y - size[1] / 2.0f);
+                    //g.TranslateTransform(-Blockpoint.X - size[0] / 2.0f, -Blockpoint.Y - size[1] / 2.0f);
+                    //g.DrawImageUnscaled(, Blockpoint.X, Blockpoint.Y, size[0], size[1]);
+
+                    //g.FillRectangle(Brushes.BlueViolet, Blockpoint.X, Blockpoint.Y, size[0], size[1]);
                 }
                 Invalidate();
             }
         }
+
+        void MoveCar()
+        {
+            Point tempPoint = new Point(Blockpoint.X - size[0] / 2, Blockpoint.Y - size[1] / 2);
+
+            Auto.Location = tempPoint;
+        }
+
+        void SlowDown()
+        {
+            while (currentSpeed > 0)
+            {
+                currentSpeed --;
+                Debug.Print(currentSpeed+"");
+            }
+        }
+
+        double DegtoRad(double deg)
+        {
+            return (Math.PI/180)*deg;
+        }
+
+        Point CalcMovePoint(float speed, float angle2)
+        {
+            int py = Convert.ToInt32(speed * (Math.Sin(DegtoRad(angle2))));
+            int px = Convert.ToInt32(speed * (Math.Cos(DegtoRad(angle2))));
+            
+            return new Point(px, py);
+        }
+
         void GameTimer_Tick(object sender, EventArgs e)
         {
             Blockpoint.X += BlockSpeed.X;
             Blockpoint.Y += BlockSpeed.Y;
+
+            BlockSpeed = CalcMovePoint(currentSpeed, angle);
             Draw();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        void Form1_Load(object sender, EventArgs e)
         {
 
         }
