@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,10 +17,14 @@ namespace RaceGame
         Bitmap Backbuffer;
         Point Blockpoint = new Point(50, 50);
         Point BlockSpeed = new Point(0, 0);
-        int DefaultBlockspeed = 10;
+        int DefaultBlockspeed = 5;
         float angle;
-        int[] size = new int[2] {20, 20};
+        int[] size = new int[2] {40, 20};
         bool Moving = false;
+
+        Image car1 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carCyan.png"));
+        Image car2 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carDarkGreen.png"));
+        Image backImage = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carcircuit.png"));
 
         public Form1()
         {
@@ -59,15 +64,12 @@ namespace RaceGame
             }
             if (e.KeyCode == Keys.W)
             {
-                BlockSpeed.Y = Convert.ToInt32(DefaultBlockspeed * (Math.Sin(DegtoRad(angle))));
-                BlockSpeed.X = Convert.ToInt32(DefaultBlockspeed * (Math.Cos(DegtoRad(angle))));
+                BlockSpeed = CalcMovePoint(DefaultBlockspeed, angle);
                 Moving = true;
-                Debug.Print("Press {0}, {1}", BlockSpeed.X, BlockSpeed.Y);
             }
             if (e.KeyCode == Keys.S)
             {
-                BlockSpeed.Y = -Convert.ToInt32(DefaultBlockspeed * (Math.Sin(DegtoRad(angle))));
-                BlockSpeed.X = -Convert.ToInt32(DefaultBlockspeed * (Math.Cos(DegtoRad(angle))));
+                BlockSpeed = CalcMovePoint(-DefaultBlockspeed, angle);
                 Moving = true;
             }
         }
@@ -107,11 +109,13 @@ namespace RaceGame
             {
                 using (var g = Graphics.FromImage(Backbuffer))
                 {
-                    g.Clear(Color.White);
+                    g.Clear(Color.Green);
+                    g.DrawImage(backImage, 0, 10, 1000, 700);
                     g.TranslateTransform(Blockpoint.X - size[0]/2.0f, Blockpoint.Y - size[1] / 2.0f);
                     g.RotateTransform(angle);
                     g.TranslateTransform(-Blockpoint.X - size[0] / 2.0f, -Blockpoint.Y - size[1] / 2.0f);
-                    g.FillRectangle(Brushes.BlueViolet, Blockpoint.X, Blockpoint.Y, size[0], size[1]);
+                    //g.FillRectangle(Brushes.BlueViolet, Blockpoint.X, Blockpoint.Y, size[0], size[1]);
+                    g.DrawImage(car1 , Blockpoint.X,Blockpoint.Y ,size[0],size[1]);
                 }
                 Invalidate();
             }
@@ -122,22 +126,11 @@ namespace RaceGame
             return (Math.PI/180)*deg;
         }
 
-        Point CalcMovePoint(double speed, double angle2, string direction)
+        private Point CalcMovePoint(float speed, float angle2)
         {
             int py = Convert.ToInt32(speed * (Math.Sin(DegtoRad(angle2))));
             int px = Convert.ToInt32(speed * (Math.Cos(DegtoRad(angle2))));
-            if (direction == "Forw")
-            {
-                return new Point(py, px);
-            }
-            else if (direction == "Backw")
-            {
-                return new Point(-py, -px);
-            }
-            else
-            {
-                return new Point(0, 0);
-            }
+            return new Point(px, py);
         }
         void GameTimer_Tick(object sender, EventArgs e)
         {
