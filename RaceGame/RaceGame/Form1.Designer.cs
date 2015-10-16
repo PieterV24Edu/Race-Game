@@ -41,7 +41,7 @@
             this.Auto.Enabled = false;
             this.Auto.Location = new System.Drawing.Point(37, 52);
             this.Auto.Name = "Auto";
-            this.Auto.Size = new System.Drawing.Size(100, 56);
+            this.Auto.Size = new System.Drawing.Size(40, 20);
             this.Auto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.Auto.TabIndex = 1;
             this.Auto.TabStop = false;
