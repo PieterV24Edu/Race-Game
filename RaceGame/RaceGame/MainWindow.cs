@@ -16,7 +16,7 @@ namespace RaceGame
 {
     public partial class MainWindow : Form
     {
-        public static int width = 640, height= 480;
+        public static Rectangle screenSize = new Rectangle(0,0,640,480);
         public int time = 0;
         public int playerCount = 1;
 
@@ -31,6 +31,7 @@ namespace RaceGame
         }
 
         List<Keys> _currentInput = new List<Keys>();
+
         GraphicsEngine gEngine;
         Timer GameTimer = new Timer();
 
@@ -57,17 +58,17 @@ namespace RaceGame
             this.KeyUp += new KeyEventHandler(SetKeysUp);
 
 
-            GraphicsEngine.AddAsset(new Asset(0,Resources.Background, Point.Empty, 0,new Size(1,1)), RenderType.Background);
+            GraphicsEngine.AddAsset(new Asset(GraphicsEngine.assetsToRender,Resources.Background, Point.Empty, 0,1,1), RenderType.Background);
             //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
 
             players.Add(new Player("1",new Point(0,0),0,car1,new List<Keys>(){Keys.W,Keys.S,Keys.A,Keys.D}));
-            //players.Add(new Player("2", new Point(0,50),0,car2,new List<Keys>(){Keys.Up,Keys.Down,Keys.Left,Keys.Right}));
+            players.Add(new Player("2", new Point(0,50),0,car2,new List<Keys>(){Keys.Up,Keys.Down,Keys.Left,Keys.Right}));
        }
 
         private void GameUpdate(object sender, EventArgs e)
         {
             time ++;
-
+            
             AddInputs();
         }
 
@@ -93,9 +94,12 @@ namespace RaceGame
 
         private void Draw(object sender, PaintEventArgs e)
         {
+
             Graphics g = canvas.CreateGraphics();
             gEngine = new GraphicsEngine(g);
             gEngine.Start();
+
+            
         }
 
         private void Exit(object sender, FormClosingEventArgs e)

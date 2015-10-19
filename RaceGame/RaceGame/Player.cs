@@ -24,9 +24,11 @@ namespace RaceGame
             this.name = name;
             this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage);
             this.playerKeys = playerKeysToUse;
+            this.playerCar.scaleX = 1;
+            this.playerCar.scaleY = 0.5f;
 
             //register with graphicsEngine
-            GraphicsEngine.AddAsset(new Asset(int.Parse(name),playerCar.image,playerCar.pos,playerCar.rot,playerCar.carScale),RenderType.Player);
+            GraphicsEngine.AddAsset(new Asset(++GraphicsEngine.assetsToRender,playerCar.image,playerCar.pos,playerCar.rot,0.5f,0.5f),RenderType.Player);
         
             Timer playerTimer = new Timer();
             playerTimer.Interval = 1;
@@ -89,10 +91,12 @@ namespace RaceGame
             if (playerKeys[0] == keyLetGo)
             {
                 F = false;
+                playerCar.Brake();
             }
             if (playerKeys[1] == keyLetGo)
             {
                 B = false;
+                playerCar.Brake();
             }
             if (playerKeys[2] == keyLetGo)
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -23,6 +24,7 @@ namespace RaceGame
     class GraphicsEngine
     {
         static object rendering = new object();
+        public static int assetsToRender = 0;
 
         Graphics backgroundBuffer;
         Graphics graphicsBuffer;
@@ -54,7 +56,7 @@ namespace RaceGame
 
         private void GraphicsUpdate()
         {
-            backBuffer = new Bitmap(MainWindow.width,MainWindow.height);
+            backBuffer = new Bitmap(MainWindow.screenSize.Width, MainWindow.screenSize.Height);
             graphicsBuffer = Graphics.FromImage(backBuffer);
 
             while (true)
@@ -65,6 +67,7 @@ namespace RaceGame
                 }
 
                 graphicsBuffer.ResetTransform();
+
                 BackgroundThread();
                 PlayerThread();
 
@@ -76,44 +79,65 @@ namespace RaceGame
 
         public void BackgroundThread()
         {
-
-            for (int i = 0; i < backgroundAssets.Count; i++)
+            lock (rendering)
             {
-                Bitmap tempImage = new Bitmap(backgroundAssets[i].imageToDisplay);
 
-                float x = MainWindow.width;
-                float y = MainWindow.height;
+                for (int i = 0; i < backgroundAssets.Count; i++)
+                {
+                    Bitmap tempImage = new Bitmap(backgroundAssets[i].imageToDisplay);
 
-                x /= tempImage.Width+10;
-                y /= tempImage.Height+10;
-                
-                graphicsBuffer.ScaleTransform(x,y);
+                    float x = MainWindow.screenSize.Width;
+                    float y = MainWindow.screenSize.Height;
 
-                graphicsBuffer.DrawImage(tempImage, backgroundAssets[i].pointOfAsset);
-                tempImage.Dispose();
+                    x /= tempImage.Width;
+                    y /= tempImage.Height;
+
+                    x = Math.Abs(x);
+                    y = Math.Abs(y);
+
+                    graphicsBuffer.ScaleTransform(x, y);
+
+                    graphicsBuffer.DrawImage(tempImage, backgroundAssets[i].pointOfAsset);
+
+                    tempImage.Dispose();
+                }
             }
         }
 
         public void PlayerThread()
         {
-
-
-            for (int i = 0; i < playerAssets.Count; i++)
+            lock (rendering)
             {
-                Bitmap tempImage = new Bitmap(playerAssets[i].imageToDisplay);
-                graphicsBuffer.DrawImage(tempImage, new Rectangle(playerAssets[i].pointOfAsset,playerAssets[i].scaleOfAsset+playerAssets[i].imageToDisplay.Size));
-                tempImage.Dispose();
+                graphicsBuffer.ResetTransform();
+
+                for (int i = 0; i < playerAssets.Count; i++)
+                {
+                    Bitmap tempImage = new Bitmap(playerAssets[i].imageToDisplay);
+
+                    graphicsBuffer.ScaleTransform(playerAssets[i].scaleX, playerAssets[i].scaleY);
+
+                    Matrix rotate = new Matrix();
+                    rotate.RotateAt(playerAssets[i].rotationOfAsset,playerAssets[i].pointOfAsset);
+                    
+                    graphicsBuffer.Transform = rotate;
+                    
+                    graphicsBuffer.DrawImage(tempImage, playerAssets[i].pointOfAsset);
+
+                    tempImage.Dispose();
+                }
             }
         }
 
         public void PropsThread()
         {
-
-            for (int i = 0; i < propAssets.Count; i++)
+            lock (rendering)
             {
-                Bitmap tempImage = new Bitmap(propAssets[i].imageToDisplay);
-                graphicsBuffer.DrawImage(tempImage, propAssets[i].pointOfAsset);
-                tempImage.Dispose();
+                for (int i = 0; i < propAssets.Count; i++)
+                {
+                    Bitmap tempImage = new Bitmap(propAssets[i].imageToDisplay);
+                    graphicsBuffer.DrawImage(tempImage, propAssets[i].pointOfAsset);
+                    tempImage.Dispose();
+                }
             }
         }
 
@@ -127,7 +151,6 @@ namespace RaceGame
         {
             lock (rendering)
             {
-                
                 switch (type)
                 {
                         case RenderType.Background:

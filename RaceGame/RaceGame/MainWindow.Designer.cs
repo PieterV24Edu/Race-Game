@@ -36,7 +36,7 @@
             // 
             this.canvas.Location = new System.Drawing.Point(-1, 0);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(MainWindow.width,MainWindow.height);
+            this.canvas.Size = new System.Drawing.Size(640, 480);
             this.canvas.TabIndex = 2;
             this.canvas.TabStop = false;
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Draw);
@@ -45,12 +45,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.ClientSize = new System.Drawing.Size(MainWindow.screenSize.Width,MainWindow.screenSize.Height);
             this.Controls.Add(this.canvas);
             this.DoubleBuffered = true;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(MainWindow.width, MainWindow.height);
-            this.MinimumSize = new System.Drawing.Size(MainWindow.width, MainWindow.height);
+            this.MaximumSize = new System.Drawing.Size(1920, 1080);
+            this.MinimumSize = new System.Drawing.Size(640, 480);
             this.Name = "MainWindow";
             this.Text = "Race Game";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Exit);

@@ -8,15 +8,17 @@ namespace RaceGame
         public Bitmap imageToDisplay;
         public Point pointOfAsset;
         public int rotationOfAsset;
-        public Size scaleOfAsset;
+        public float scaleX;
+        public float scaleY;
 
-        public Asset(int id, Bitmap img, Point pos, int rot,Size scale)
+        public Asset(int id, Bitmap img, Point pos, int rot,float xScale,float yScale)
         {
             assetId = id;
             imageToDisplay = img;
             pointOfAsset = pos;
             rotationOfAsset = rot;
-            scaleOfAsset = scale;
+            scaleX = xScale;
+            scaleY = yScale;
         }
     }
 }

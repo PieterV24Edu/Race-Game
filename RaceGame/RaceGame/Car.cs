@@ -14,13 +14,15 @@ namespace RaceGame
         public Point pos;
         public int currentSpeed = 0;
         public int rot;
-        public Size carScale; 
+        public float scaleX,scaleY; 
 
         bool moving = false;
 
         int playerId;
-        int maxSpeed = 7;
+        int maxSpeed =20;
         Timer carTimer = new Timer();
+        Timer brakeTimer = new Timer();
+
 
         public Car(int playerId, Point startPos, int startRot, Bitmap carImage)
         {
@@ -30,8 +32,9 @@ namespace RaceGame
             
             image = carImage;
 
-            carScale = new Size(1,1);
-            
+            scaleX = 1;
+            scaleY = 1;
+
             carTimer.Interval = 1;
             carTimer.Elapsed += MoveCar;
             carTimer.Start();
@@ -42,9 +45,9 @@ namespace RaceGame
 
             pos.X += currentSpeed;
 
-            if (pos.X  >= MainWindow.width)
+            if (pos.X  >= MainWindow.screenSize.Width)
             {
-                pos.X = MainWindow.width;
+                pos.X = MainWindow.screenSize.Width;
             }
 
             if (pos.X <= 1)
@@ -56,73 +59,51 @@ namespace RaceGame
         }
 
         public void Accelerate(int speed)
-        {
-            
+        {   
+            brakeTimer.Stop();
 
-            //front
-            if (currentSpeed <= maxSpeed && speed > 0)
-            {
-                currentSpeed += speed;
-            }
-
-            //back
-            if (currentSpeed >= -maxSpeed && speed < 0)
-            {
-                currentSpeed += speed;
-            }
-
-
-
-
+            currentSpeed += speed;
         }
 
         public void Brake()
         {
-            while (currentSpeed != 0)
-            {
 
-                if (currentSpeed > 1)
-                {
-                    currentSpeed--;
-                    GraphicsEngine.UpdatePos(playerId, pos);
-                }
+            brakeTimer.Interval = 10;
 
-                if (currentSpeed < -1)
-                {
-                    currentSpeed++;
-                    GraphicsEngine.UpdatePos(playerId, pos);
-                }
-            }
-        }
+            brakeTimer.Elapsed += new ElapsedEventHandler
+                (
+                    (o, b) =>
+                        {
+                            if (currentSpeed >= 1)
+                            {
+                                currentSpeed--;
+                            }
 
-        void SlowDown(object sender, ElapsedEventArgs e)
-        {
+                            if (currentSpeed <= -1)
+                            {
+                                currentSpeed++;
+                            }
 
-            while (currentSpeed != 0)
-            {
-                
-                if (currentSpeed > 1)
-                {
-                    currentSpeed--;
-                    GraphicsEngine.UpdatePos(playerId, pos);
-                    return;
-                }
+                            if (currentSpeed == 0)
+                            {
+                                brakeTimer.Stop();
+                            }
+                        }
+                );
 
-                if (currentSpeed < -1)
-                {
-                    currentSpeed++;
-                    GraphicsEngine.UpdatePos(playerId, pos);
-                    return;
-                }
-            }
+            brakeTimer.Start();
         }
 
         internal void SteerLeft()
         {
+            rot -= 10;
+            GraphicsEngine.UpdateRot(playerId,rot);
         }
 
         internal void SteerRight()
         {
+            rot += 10;
+            GraphicsEngine.UpdateRot(playerId, rot);
         }
 
         //insert wheels
