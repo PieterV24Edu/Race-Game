@@ -16,7 +16,7 @@ namespace RaceGame
 {
     public partial class MainWindow : Form
     {
-        public static Rectangle screenSize = new Rectangle(0,0,640,480);
+        public static Rectangle screenSize = new Rectangle(0,0,1024,768);
         public int time = 0;
         public int playerCount = 1;
 
