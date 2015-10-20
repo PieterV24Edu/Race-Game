@@ -15,11 +15,11 @@ namespace RaceGame
         public int currentSpeed = 0;
         public int rot;
         public float scaleX,scaleY; 
-
         bool moving = false;
 
         int playerId;
         int maxSpeed =20;
+        int accStep = 1;
         Timer carTimer = new Timer();
         Timer brakeTimer = new Timer();
 
@@ -58,40 +58,35 @@ namespace RaceGame
             GraphicsEngine.UpdatePos(playerId, pos);
         }
 
-        public void Accelerate(int speed)
-        {   
-            brakeTimer.Stop();
-
-            currentSpeed += speed;
+        public void Accelerate(char dir)
+        {
+            switch (dir)
+            {
+                case 'F':
+                    if (currentSpeed < maxSpeed)
+                    {
+                        currentSpeed += accStep;
+                    }
+                    break;
+                case 'B':
+                    if (currentSpeed > -maxSpeed)
+                    {
+                        currentSpeed -= accStep;
+                    }
+                    break;
+            }
         }
 
-        public void Brake()
+        public void Decellerate()
         {
-
-            brakeTimer.Interval = 10;
-
-            brakeTimer.Elapsed += new ElapsedEventHandler
-                (
-                    (o, b) =>
-                        {
-                            if (currentSpeed >= 1)
-                            {
-                                currentSpeed--;
-                            }
-
-                            if (currentSpeed <= -1)
-                            {
-                                currentSpeed++;
-                            }
-
-                            if (currentSpeed == 0)
-                            {
-                                brakeTimer.Stop();
-                            }
-                        }
-                );
-
-            brakeTimer.Start();
+            if (currentSpeed > 0)
+            {
+                currentSpeed -= accStep;
+            }
+            if (currentSpeed < 0)
+            {
+                currentSpeed += accStep;
+            }
         }
 
         internal void SteerLeft()

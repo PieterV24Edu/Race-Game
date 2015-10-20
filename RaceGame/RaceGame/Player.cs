@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Windows.Forms;
 
@@ -11,9 +13,10 @@ namespace RaceGame
     {
         string name;
         
-        int speed;
         int roundElapsed = 0;
-
+        private int maxSpeed = 10;
+        private float accStep = 0.25F;
+        private float angle = 0;
         bool F, B, L, R;
         
         Car playerCar;
@@ -32,40 +35,17 @@ namespace RaceGame
         
             Timer playerTimer = new Timer();
             playerTimer.Interval = 1;
-            playerTimer.Tick += SetMovement;
+            playerTimer.Tick += Timer_Tick;
             playerTimer.Start();
 
         }
 
-        private void SetMovement(object sender, EventArgs e)
-        {
-
-            if (F)
-            {
-                //move forward
-                playerCar.Accelerate(1);
-            }
-            if (B)
-            {
-                playerCar.Accelerate(-1);
-                //move backward
-            }
-            if (L)
-            {
-                playerCar.SteerLeft();
-                //steer left
-            }
-            if (R)
-            {
-                playerCar.SteerRight();
-                //steer right
-            }
-        }
-
         public void CompareInput(Keys keyToCompare)
         {
-            if (!playerKeys.Contains(keyToCompare)) { return; }
-
+            if (!playerKeys.Contains(keyToCompare))
+            {
+                return;    
+            }
             if (playerKeys[0] == keyToCompare)
             {
                 F = true;
@@ -84,27 +64,56 @@ namespace RaceGame
             }
         }
 
-        public void KeyLetGo(Keys keyLetGo)
+        public void KeyLetGo(Keys keytoRemove)
         {
-            if (!playerKeys.Contains(keyLetGo)) { return;}
-
-            if (playerKeys[0] == keyLetGo)
+            if (playerKeys[0] == keytoRemove)
             {
                 F = false;
-                playerCar.Brake();
             }
-            if (playerKeys[1] == keyLetGo)
+            if (playerKeys[1] == keytoRemove)
             {
                 B = false;
-                playerCar.Brake();
             }
-            if (playerKeys[2] == keyLetGo)
+            if (playerKeys[2] == keytoRemove)
             {
                 L = false;
             }
-            if (playerKeys[3] == keyLetGo)
+            if (playerKeys[3] == keytoRemove)
             {
                 R = false;
+            }
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (F)
+            {
+                playerCar.Accelerate('F');
+            }
+            if (L)
+            {
+                if (playerCar.currentSpeed != 0)
+                {
+                    playerCar.SteerLeft();
+                }
+            }
+            if (B)
+            {
+                playerCar.Accelerate('B');
+            }
+            if (R)
+            {
+                if (playerCar.currentSpeed != 0)
+                {
+                    playerCar.SteerLeft();
+                }
+            }
+            if (!F && !B)
+            {
+                if (playerCar.currentSpeed != 0)
+                {
+                    playerCar.Decellerate();
+                }
             }
         }
     }
