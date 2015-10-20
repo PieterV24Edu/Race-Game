@@ -1,0 +1,218 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+using RaceGame.Properties;
+
+namespace RaceGame
+{
+    enum RenderType
+    {
+        Background,
+        Player,
+        Props
+    }
+
+
+    class GraphicsEngine
+    {
+        static object rendering = new object();
+        public static int assetsToRender = 0;
+
+        Graphics backgroundBuffer;
+        Graphics graphicsBuffer;
+        Graphics drawHandle;
+        Bitmap backBuffer;
+        Thread mainRenderThread;
+        Thread debugThread;
+        static List<Asset> backgroundAssets = new List<Asset>();
+        static List<Asset> playerAssets = new List<Asset>();
+        static List<Asset> propAssets = new List<Asset>(); 
+
+        public int frames;
+        public int startTime;
+
+        public GraphicsEngine(Graphics dHandle)
+        {
+            drawHandle = dHandle;
+        }
+
+        public void Start()
+        {
+            mainRenderThread = new Thread(new ThreadStart(GraphicsUpdate));
+            mainRenderThread.Start();
+
+            debugThread = new Thread(new ThreadStart(DebugThread));
+            debugThread.Start();
+
+        }
+
+        private void GraphicsUpdate()
+        {
+            backBuffer = new Bitmap(MainWindow.screenSize.Width, MainWindow.screenSize.Height);
+            graphicsBuffer = Graphics.FromImage(backBuffer);
+
+            while (true)
+            {
+                if (graphicsBuffer != null)
+                {
+                    graphicsBuffer.Clear(Color.White);
+                }
+
+                graphicsBuffer.ResetTransform();
+
+                BackgroundThread();
+                PlayerThread();
+
+                drawHandle.DrawImage(backBuffer,0,0);
+                frames++;
+
+            }
+        }
+
+        public void BackgroundThread()
+        {
+            lock (rendering)
+            {
+
+                for (int i = 0; i < backgroundAssets.Count; i++)
+                {
+                    Bitmap tempImage = new Bitmap(backgroundAssets[i].imageToDisplay);
+
+                    float x = MainWindow.screenSize.Width;
+                    float y = MainWindow.screenSize.Height;
+
+                    x /= tempImage.Width;
+                    y /= tempImage.Height;
+
+                    x = Math.Abs(x);
+                    y = Math.Abs(y);
+
+                    graphicsBuffer.ScaleTransform(x, y);
+
+                    graphicsBuffer.DrawImage(tempImage, backgroundAssets[i].pointOfAsset);
+
+                    tempImage.Dispose();
+                }
+            }
+        }
+
+        public void PlayerThread()
+        {
+            lock (rendering)
+            {
+                graphicsBuffer.ResetTransform();
+
+                for (int i = 0; i < playerAssets.Count; i++)
+                {
+                    Bitmap tempImage = new Bitmap(playerAssets[i].imageToDisplay);
+
+                    graphicsBuffer.ScaleTransform(playerAssets[i].scaleX, playerAssets[i].scaleY);
+
+                    Matrix rotate = new Matrix();
+                    rotate.RotateAt(playerAssets[i].rotationOfAsset,playerAssets[i].pointOfAsset);
+                    
+                    graphicsBuffer.Transform = rotate;
+                    
+                    graphicsBuffer.DrawImage(tempImage, playerAssets[i].pointOfAsset);
+
+                    tempImage.Dispose();
+                }
+            }
+        }
+
+        public void PropsThread()
+        {
+            lock (rendering)
+            {
+                for (int i = 0; i < propAssets.Count; i++)
+                {
+                    Bitmap tempImage = new Bitmap(propAssets[i].imageToDisplay);
+                    graphicsBuffer.DrawImage(tempImage, propAssets[i].pointOfAsset);
+                    tempImage.Dispose();
+                }
+            }
+        }
+
+        public void Stop()
+        {
+            mainRenderThread.Abort();
+            debugThread.Abort();
+        }
+
+        public static void AddAsset(Asset assetToRender, RenderType type)
+        {
+            lock (rendering)
+            {
+                switch (type)
+                {
+                        case RenderType.Background:
+                            backgroundAssets.Add(assetToRender);
+                            //add on top of backgrounds
+                            break;
+                        case RenderType.Player:
+                            playerAssets.Add(assetToRender);
+                            //add on top of players
+                            break;
+                        case RenderType.Props:
+                            propAssets.Add(assetToRender);
+                            //add on top of props
+                            break;
+                }
+            }
+
+        }
+
+        public static void UpdatePos(int assetId , Point pos)
+        {
+
+            for (int i = 0; i < playerAssets.Count; i++)
+            {
+                if (playerAssets[i].assetId == assetId)
+                {
+                    playerAssets[i].pointOfAsset = pos;
+                }
+            }
+        }
+
+        public static void UpdateRot(int assetId, int rot)
+        {
+            Point tempPos = new Point(1,0);
+
+
+
+            for (int i = 0; i < playerAssets.Count; i++)
+            {
+                if (playerAssets[i].assetId == assetId)
+                {
+                    playerAssets[i].rotationOfAsset = rot;
+                }
+            }
+        }
+
+
+
+
+        public void DebugThread()
+        {
+            while (true)
+            {
+
+                if (Environment.TickCount >= startTime + 1000)
+                {
+                    Debug.Print("FPS: "+frames);
+                    frames = 0;
+                    startTime = Environment.TickCount;
+                }
+            }
+        }
+
+    }
+}
