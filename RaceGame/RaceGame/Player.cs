@@ -25,13 +25,11 @@ namespace RaceGame
         public Player(string name, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse)
         {
             this.name = name;
-            this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage);
+            this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,0.5f,0.5f);
             this.playerKeys = playerKeysToUse;
-            this.playerCar.scaleX = 1;
-            this.playerCar.scaleY = 0.5f;
 
             //register with graphicsEngine
-            GraphicsEngine.AddAsset(new Asset(++GraphicsEngine.assetsToRender,playerCar.image,playerCar.pos,playerCar.rot,0.5f,0.5f),RenderType.Player);
+            GraphicsEngine.AddAsset(new Asset(++GraphicsEngine.assetsToRender,playerCar.image,playerCar.pos,playerCar.rot,playerCar.scaleX,playerCar.scaleY),RenderType.Player);
         
             Timer playerTimer = new Timer();
             playerTimer.Interval = 1;
@@ -105,7 +103,7 @@ namespace RaceGame
             {
                 if (playerCar.currentSpeed != 0)
                 {
-                    playerCar.SteerLeft();
+                    playerCar.SteerRight();
                 }
             }
             if (!F && !B)

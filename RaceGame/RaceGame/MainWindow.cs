@@ -102,7 +102,7 @@ namespace RaceGame
             
         }
 
-        private void Exit(object sender, FormClosingEventArgs e)
+        private void Exit(object sender, FormClosedEventHandler e)
         {
             gEngine.Stop();
         }
@@ -118,6 +118,10 @@ namespace RaceGame
             }
         }
 
+        private void Exit(object sender, FormClosedEventArgs e)
+        {
+            gEngine.Stop();
+        }
     }
 
 }

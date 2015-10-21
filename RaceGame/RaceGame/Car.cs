@@ -24,7 +24,7 @@ namespace RaceGame
         Timer brakeTimer = new Timer();
 
 
-        public Car(int playerId, Point startPos, int startRot, Bitmap carImage)
+        public Car(int playerId, Point startPos, int startRot, Bitmap carImage,float xScale=0,float yScale=0)
         {
             this.playerId = playerId;
             pos = startPos;
@@ -32,30 +32,34 @@ namespace RaceGame
             
             image = carImage;
 
-            scaleX = 1;
-            scaleY = 1;
+            if (xScale == 0)
+            {
+                scaleX = 1;
+            }
+            else
+            {
+                scaleX = xScale;
+            }
+
+            if (yScale == 1)
+            {
+                scaleY = 1;
+            }
+            else
+            {
+                scaleY = yScale;
+            }
 
             carTimer.Interval = 1;
             carTimer.Elapsed += MoveCar;
             carTimer.Start();
+
+            GraphicsEngine.UpdateScale(playerId,scaleX,scaleY);
         }
 
         private void MoveCar(object sender, ElapsedEventArgs e)
         {
-
-            pos.X += currentSpeed;
-
-            if (pos.X  >= MainWindow.screenSize.Width)
-            {
-                pos.X = MainWindow.screenSize.Width;
-                currentSpeed = 0;
-            }
-
-            if (pos.X <= 1)
-            {
-                pos.X = 1;
-                currentSpeed = 0;
-            }
+            pos = CalcMovePoint(currentSpeed, rot);
 
             GraphicsEngine.UpdatePos(playerId, pos);
         }
@@ -91,24 +95,32 @@ namespace RaceGame
             }
         }
 
-        internal void SteerLeft()
+        public void SteerLeft()
         {
-            rot -= 10;
+            rot -= 5;
             GraphicsEngine.UpdateRot(playerId,rot);
         }
 
-        internal void SteerRight()
+        public void SteerRight()
         {
-            rot += 10;
+            rot += 5;
             GraphicsEngine.UpdateRot(playerId, rot);
         }
 
-        //insert wheels
-        //insert acceleration
-        //insert rotation
-        //insert brakes
-        //insert revers
+        double DegtoRad(double deg)
+        {
+            return (Math.PI/180)*deg;
+        }
 
+        Point CalcMovePoint(double speed, double angle2)
+        {
+            int py = Convert.ToInt32(speed * (Math.Sin(DegtoRad(angle2))));
+            int px = Convert.ToInt32(speed * (Math.Cos(DegtoRad(angle2))));
+            py += pos.Y;
+            px += pos.X;
+
+            return new Point(px,py);
+        }
 
 
     }

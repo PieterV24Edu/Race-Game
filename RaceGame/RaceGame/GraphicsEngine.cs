@@ -72,9 +72,8 @@ namespace RaceGame
                 BackgroundThread();
                 PlayerThread();
 
-                drawHandle.DrawImage(backBuffer,0,0);
+                drawHandle.DrawImage(backBuffer, 0, 0);
                 frames++;
-
             }
         }
 
@@ -115,13 +114,14 @@ namespace RaceGame
                 {
                     Bitmap tempImage = new Bitmap(playerAssets[i].imageToDisplay);
 
-                    graphicsBuffer.ScaleTransform(playerAssets[i].scaleX, playerAssets[i].scaleY);
 
                     Matrix rotate = new Matrix();
                     rotate.RotateAt(playerAssets[i].rotationOfAsset,playerAssets[i].pointOfAsset);
                     
                     graphicsBuffer.Transform = rotate;
-                    
+
+                    graphicsBuffer.ScaleTransform(playerAssets[i].scaleX, playerAssets[i].scaleY,MatrixOrder.Append);
+
                     graphicsBuffer.DrawImage(tempImage, playerAssets[i].pointOfAsset);
 
                     tempImage.Dispose();
@@ -197,15 +197,25 @@ namespace RaceGame
 
         public static void UpdateRot(int assetId, int rot)
         {
-            Point tempPos = new Point(1,0);
-
-
 
             for (int i = 0; i < playerAssets.Count; i++)
             {
                 if (playerAssets[i].assetId == assetId)
                 {
                     playerAssets[i].rotationOfAsset = rot;
+                }
+            }
+        }
+
+        public static void UpdateScale(int assetId, float scaleX,float scaleY)
+        {
+
+            for (int i = 0; i < playerAssets.Count; i++)
+            {
+                if (playerAssets[i].assetId == assetId)
+                {
+                    playerAssets[i].scaleX = scaleX;
+                    playerAssets[i].scaleY = scaleY;
                 }
             }
         }

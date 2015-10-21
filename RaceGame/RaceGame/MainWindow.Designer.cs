@@ -51,10 +51,10 @@
             this.DoubleBuffered = true;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1024, 768);
-            this.MinimumSize = new System.Drawing.Size(1024, 768);
+            this.MinimumSize = new System.Drawing.Size(1024, 726);
             this.Name = "MainWindow";
             this.Text = "Race Game";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Exit);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Exit);
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             this.ResumeLayout(false);
 
