@@ -1,5 +1,7 @@
 # Race-Game
 
+<h1> When writing code please do so in the local branch and not in a different folder inside the localbranch</h1>
+
 <b>To get this repository:</b>
 
 Right click where you want the repository to be saved localy on your computer.
