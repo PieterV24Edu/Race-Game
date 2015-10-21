@@ -14,15 +14,12 @@ namespace RaceGame
         public Point pos;
         public int currentSpeed = 0;
         public int rot;
-        public float scaleX,scaleY; 
-        bool moving = false;
+        public float scaleX,scaleY;
 
         int playerId;
-        int maxSpeed =20;
+        int maxSpeed =12;
         int accStep = 1;
         Timer carTimer = new Timer();
-        Timer brakeTimer = new Timer();
-
 
         public Car(int playerId, Point startPos, int startRot, Bitmap carImage,float xScale=0,float yScale=0)
         {
@@ -98,12 +95,14 @@ namespace RaceGame
         public void SteerLeft()
         {
             rot -= 5;
+            Decellerate();
             GraphicsEngine.UpdateRot(playerId,rot);
         }
 
         public void SteerRight()
         {
             rot += 5;
+            Decellerate();
             GraphicsEngine.UpdateRot(playerId, rot);
         }
 

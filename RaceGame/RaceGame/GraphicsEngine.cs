@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Remoting.Messaging;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -23,8 +25,12 @@ namespace RaceGame
 
     class GraphicsEngine
     {
+        static object shadowLock = new object();
         static object rendering = new object();
         public static int assetsToRender = 0;
+
+        public int frames;
+        public int startTime;
 
         Graphics backgroundBuffer;
         Graphics graphicsBuffer;
@@ -32,13 +38,11 @@ namespace RaceGame
         Bitmap backBuffer;
         Thread mainRenderThread;
         Thread debugThread;
+        
         static List<Asset> backgroundAssets = new List<Asset>();
         static List<Asset> playerAssets = new List<Asset>();
         static List<Asset> propAssets = new List<Asset>();
         static List<Asset> infoAssets = new List<Asset>();
-
-        public int frames;
-        public int startTime;
 
         public GraphicsEngine(Graphics dHandle)
         {
@@ -112,19 +116,15 @@ namespace RaceGame
 
                 for (int i = 0; i < playerAssets.Count; i++)
                 {
-                    Bitmap tempImage = new Bitmap(playerAssets[i].imageToDisplay);
-
-
                     Matrix rotate = new Matrix();
+
                     rotate.RotateAt(playerAssets[i].rotationOfAsset,playerAssets[i].pointOfAsset);
                     
                     graphicsBuffer.Transform = rotate;
 
                     graphicsBuffer.ScaleTransform(playerAssets[i].scaleX, playerAssets[i].scaleY,MatrixOrder.Append);
 
-                    graphicsBuffer.DrawImage(tempImage, playerAssets[i].pointOfAsset);
-
-                    tempImage.Dispose();
+                    graphicsBuffer.DrawImage(playerAssets[i].imageToDisplay, playerAssets[i].pointOfAsset);
                 }
             }
         }
@@ -149,7 +149,7 @@ namespace RaceGame
                 for (int i = 0; i < infoAssets.Count; i++)
                 {
                     Bitmap tempImage = new Bitmap(infoAssets[i].imageToDisplay);
-                    graphicsBuffer.DrawImage(tempImage, propAssets[i].pointOfAsset);
+                    graphicsBuffer.DrawImage(tempImage, infoAssets[i].pointOfAsset);
                     tempImage.Dispose();
                 }
             }
@@ -219,10 +219,7 @@ namespace RaceGame
                 }
             }
         }
-
-
-
-
+        
         public void DebugThread()
         {
             while (true)

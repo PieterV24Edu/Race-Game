@@ -13,10 +13,8 @@ namespace RaceGame
     {
         string name;
         
-        int roundElapsed = 0;
-        private int maxSpeed = 10;
-        private float accStep = 0.25F;
-        private float angle = 0;
+        int roundsElapsed = 0;
+        float accStep = 0.25F;
         bool F, B, L, R;
         
         Car playerCar;
