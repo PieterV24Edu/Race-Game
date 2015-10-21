@@ -12,16 +12,13 @@ namespace RaceGame
     {
         public Bitmap image;
         public Point pos;
-        public int currentSpeed = 0;
+        public float currentSpeed = 0;
         public int rot;
         public float scaleX,scaleY; 
-        bool moving = false;
-
         int playerId;
-        int maxSpeed =20;
-        int accStep = 1;
+        int maxSpeed =10;
+        float accStep = 1f;
         Timer carTimer = new Timer();
-        Timer brakeTimer = new Timer();
 
 
         public Car(int playerId, Point startPos, int startRot, Bitmap carImage,float xScale=0,float yScale=0)
@@ -97,13 +94,13 @@ namespace RaceGame
 
         public void SteerLeft()
         {
-            rot -= 5;
+            rot -= 2;
             GraphicsEngine.UpdateRot(playerId,rot);
         }
 
         public void SteerRight()
         {
-            rot += 5;
+            rot += 2;
             GraphicsEngine.UpdateRot(playerId, rot);
         }
 

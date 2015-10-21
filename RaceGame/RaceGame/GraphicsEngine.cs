@@ -17,7 +17,8 @@ namespace RaceGame
     {
         Background,
         Player,
-        Props
+        Props,
+        Info
     }
 
 
@@ -26,7 +27,7 @@ namespace RaceGame
         static object rendering = new object();
         public static int assetsToRender = 0;
 
-        Graphics backgroundBuffer;
+        //Graphics backgroundBuffer;
         Graphics graphicsBuffer;
         Graphics drawHandle;
         Bitmap backBuffer;
@@ -64,7 +65,7 @@ namespace RaceGame
             {
                 if (graphicsBuffer != null)
                 {
-                    graphicsBuffer.Clear(Color.White);
+                    graphicsBuffer.Clear(Color.Green);
                 }
 
                 graphicsBuffer.ResetTransform();
@@ -175,6 +176,10 @@ namespace RaceGame
                             //add on top of players
                             break;
                         case RenderType.Props:
+                            propAssets.Add(assetToRender);
+                            //add on top of props
+                            break;
+                        case RenderType.Info:
                             propAssets.Add(assetToRender);
                             //add on top of props
                             break;

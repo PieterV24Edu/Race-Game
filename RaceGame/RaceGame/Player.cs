@@ -12,11 +12,8 @@ namespace RaceGame
     class Player
     {
         string name;
-        
-        int roundElapsed = 0;
-        private int maxSpeed = 10;
-        private float accStep = 0.25F;
-        private float angle = 0;
+        //int roundElapsed = 0;
+
         bool F, B, L, R;
         
         Car playerCar;
@@ -25,7 +22,7 @@ namespace RaceGame
         public Player(string name, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse)
         {
             this.name = name;
-            this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,0.5f,0.5f);
+            this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,0.25f,0.25f);
             this.playerKeys = playerKeysToUse;
 
             //register with graphicsEngine
