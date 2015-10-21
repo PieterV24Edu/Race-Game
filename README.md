@@ -1,6 +1,6 @@
 # Race-Game
 
-<h1> When writing code please do so in the local branch and not in a different folder inside the localbranch</h1>
+<h3>When writing code please do so in the local branch and not in a different folder inside the localbranch</h3>
 
 <b>To get this repository:</b>
 
