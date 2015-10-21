@@ -34,7 +34,8 @@ namespace RaceGame
         Thread debugThread;
         static List<Asset> backgroundAssets = new List<Asset>();
         static List<Asset> playerAssets = new List<Asset>();
-        static List<Asset> propAssets = new List<Asset>(); 
+        static List<Asset> propAssets = new List<Asset>();
+        static List<Asset> infoAssets = new List<Asset>();
 
         public int frames;
         public int startTime;
@@ -141,6 +142,18 @@ namespace RaceGame
             }
         }
 
+        public void InfoThread()
+        {
+            lock (rendering)
+            {
+                for (int i = 0; i < infoAssets.Count; i++)
+                {
+                    Bitmap tempImage = new Bitmap(infoAssets[i].imageToDisplay);
+                    graphicsBuffer.DrawImage(tempImage, propAssets[i].pointOfAsset);
+                    tempImage.Dispose();
+                }
+            }
+        }
         public void Stop()
         {
             mainRenderThread.Abort();
