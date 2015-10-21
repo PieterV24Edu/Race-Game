@@ -48,11 +48,13 @@ namespace RaceGame
             if (pos.X  >= MainWindow.screenSize.Width)
             {
                 pos.X = MainWindow.screenSize.Width;
+                currentSpeed = 0;
             }
 
             if (pos.X <= 1)
             {
                 pos.X = 1;
+                currentSpeed = 0;
             }
 
             GraphicsEngine.UpdatePos(playerId, pos);

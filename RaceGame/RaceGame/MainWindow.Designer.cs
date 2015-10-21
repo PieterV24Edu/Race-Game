@@ -36,7 +36,7 @@
             // 
             this.canvas.Location = new System.Drawing.Point(-1, 0);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(640, 480);
+            this.canvas.Size = new System.Drawing.Size(1024, 768);
             this.canvas.TabIndex = 2;
             this.canvas.TabStop = false;
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Draw);
