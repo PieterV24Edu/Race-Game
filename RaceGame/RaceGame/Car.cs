@@ -17,7 +17,7 @@ namespace RaceGame
         public float scaleX,scaleY;
 
         int playerId;
-        int maxSpeed =12;
+        public int maxSpeed =12;
         int accStep = 1;
         Timer carTimer = new Timer();
 
@@ -111,10 +111,10 @@ namespace RaceGame
             return (Math.PI/180)*deg;
         }
 
-        Point CalcMovePoint(double speed, double angle2)
+        Point CalcMovePoint(double speed, double angle)
         {
-            int py = Convert.ToInt32(speed * (Math.Sin(DegtoRad(angle2))));
-            int px = Convert.ToInt32(speed * (Math.Cos(DegtoRad(angle2))));
+            int py = Convert.ToInt32(speed * (Math.Sin(DegtoRad(angle))));
+            int px = Convert.ToInt32(speed * (Math.Cos(DegtoRad(angle))));
             py += pos.Y;
             px += pos.X;
 

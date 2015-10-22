@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Remoting.Messaging;
@@ -19,7 +20,8 @@ namespace RaceGame
     {
         Background,
         Player,
-        Props
+        Props,
+        Info
     }
 
 
@@ -43,6 +45,7 @@ namespace RaceGame
         static List<Asset> playerAssets = new List<Asset>();
         static List<Asset> propAssets = new List<Asset>();
         static List<Asset> infoAssets = new List<Asset>();
+        Point newPointOfAsset;
 
         public GraphicsEngine(Graphics dHandle)
         {
@@ -68,7 +71,7 @@ namespace RaceGame
             {
                 if (graphicsBuffer != null)
                 {
-                    graphicsBuffer.Clear(Color.White);
+                    graphicsBuffer.Clear(Color.Green);
                 }
 
                 graphicsBuffer.ResetTransform();
@@ -118,7 +121,10 @@ namespace RaceGame
                 {
                     Matrix rotate = new Matrix();
 
-                    rotate.RotateAt(playerAssets[i].rotationOfAsset,playerAssets[i].pointOfAsset);
+                    newPointOfAsset.X = Convert.ToInt32(playerAssets[i].pointOfAsset.X + (playerAssets[i].imageToDisplay.Width / 2));
+                    newPointOfAsset.Y = Convert.ToInt32(playerAssets[i].pointOfAsset.Y + (playerAssets[i].imageToDisplay.Height / 2));
+
+                    rotate.RotateAt(playerAssets[i].rotationOfAsset,newPointOfAsset);
                     
                     graphicsBuffer.Transform = rotate;
 
@@ -177,6 +183,10 @@ namespace RaceGame
                         case RenderType.Props:
                             propAssets.Add(assetToRender);
                             //add on top of props
+                            break;
+                        case RenderType.Info:
+                            infoAssets.Add(assetToRender);
+                            //add on top of info
                             break;
                 }
             }

@@ -19,7 +19,6 @@ namespace RaceGame
         public static Rectangle screenSize = new Rectangle(0,0,1024,768);
         public int time = 0;
         public int playerCount = 1;
-
         public List<Keys> currentInput
         {
             get { return _currentInput; }
