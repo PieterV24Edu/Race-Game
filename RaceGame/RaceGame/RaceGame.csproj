@@ -92,9 +92,7 @@
     <Content Include="carDarkGreen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\carcircuit2.png" />
-    <None Include="Resources\carcircuit.png" />
-    <None Include="Resources\Background.bmp" />
+    <None Include="Resources\Background.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

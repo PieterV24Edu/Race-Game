@@ -80,6 +80,7 @@ namespace RaceGame
                 PlayerThread();
 
                 drawHandle.DrawImage(backBuffer, 0, 0);
+                drawHandle.DrawImage(backBuffer, 0, 0);
                 frames++;
             }
         }
