@@ -12,13 +12,13 @@ namespace RaceGame
     {
         public Bitmap image;
         public Point pos;
-        public int currentSpeed = 0;
+        public float currentSpeed = 0;
         public int rot;
         public float scaleX,scaleY;
 
         int playerId;
         public int maxSpeed =12;
-        int accStep = 1;
+        public float accStep = 0.5f;
         Timer carTimer = new Timer();
 
         public Car(int playerId, Point startPos, int startRot, Bitmap carImage,float xScale=0,float yScale=0)

@@ -39,7 +39,7 @@ namespace RaceGame
         Graphics drawHandle;
         Bitmap backBuffer;
         Thread mainRenderThread;
-        Thread debugThread;
+        //Thread debugThread;
         
         static List<Asset> backgroundAssets = new List<Asset>();
         static List<Asset> playerAssets = new List<Asset>();
@@ -57,8 +57,8 @@ namespace RaceGame
             mainRenderThread = new Thread(new ThreadStart(GraphicsUpdate));
             mainRenderThread.Start();
 
-            debugThread = new Thread(new ThreadStart(DebugThread));
-            debugThread.Start();
+            //debugThread = new Thread(new ThreadStart(DebugThread));
+            //debugThread.Start();
 
         }
 
@@ -163,7 +163,7 @@ namespace RaceGame
         public void Stop()
         {
             mainRenderThread.Abort();
-            debugThread.Abort();
+            //debugThread.Abort();
         }
 
         public static void AddAsset(Asset assetToRender, RenderType type)
@@ -230,7 +230,7 @@ namespace RaceGame
             }
         }
         
-        public void DebugThread()
+        /*public void DebugThread()
         {
             while (true)
             {
@@ -242,7 +242,7 @@ namespace RaceGame
                     startTime = Environment.TickCount;
                 }
             }
-        }
+        }*/
 
     }
 }

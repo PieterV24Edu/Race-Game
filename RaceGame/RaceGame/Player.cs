@@ -16,7 +16,6 @@ namespace RaceGame
         int roundsElapsed = 0;
         float fuelRemaining = 100;
         int pitStops = 0;
-        float accStep = 0.25F;
         bool F, B, L, R;
         int fuelCalcCounter = 0;
         float[] fuelCalcVal = new float[10];
@@ -29,7 +28,7 @@ namespace RaceGame
             this.name = name;
             this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,0.25f,0.25f);
             this.playerKeys = playerKeysToUse;
-
+            
             //register with graphicsEngine
             GraphicsEngine.AddAsset(new Asset(++GraphicsEngine.assetsToRender,playerCar.image,playerCar.pos,playerCar.rot,playerCar.scaleX,playerCar.scaleY),RenderType.Player);
         
@@ -40,6 +39,10 @@ namespace RaceGame
 
         }
 
+        public double[] GetInfo()
+        {
+            return new double[4] {playerCar.currentSpeed, fuelRemaining, roundsElapsed, pitStops};
+        }
         public void CompareInput(Keys keyToCompare)
         {
             if (!playerKeys.Contains(keyToCompare))

@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Configuration;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,9 +17,11 @@ namespace RaceGame
 {
     public partial class MainWindow : Form
     {
-        public static Rectangle screenSize = new Rectangle(0,0,1024,768);
+        public static Rectangle screenSize = new Rectangle(0,0,1011,729);
         public int time = 0;
         public int playerCount = 1;
+        double[] Player1Info = new double[4];
+        double[] Player2Info = new double[4];
         public List<Keys> currentInput
         {
             get { return _currentInput; }
@@ -33,6 +36,7 @@ namespace RaceGame
 
         GraphicsEngine gEngine;
         Timer GameTimer = new Timer();
+        Timer InfoTimer = new Timer();
 
         List<Player> players = new List<Player>();
 
@@ -52,16 +56,20 @@ namespace RaceGame
             GameTimer.Tick += new EventHandler(GameUpdate);
             GameTimer.Start();
 
+            InfoTimer.Interval = 100;
+            InfoTimer.Tick += new EventHandler(InfoUpdate);
+            InfoTimer.Start();
+
             this.Paint += new PaintEventHandler(Draw);
             this.KeyDown += new KeyEventHandler(SetKeysDown);
             this.KeyUp += new KeyEventHandler(SetKeysUp);
-
-
+            
             GraphicsEngine.AddAsset(new Asset(GraphicsEngine.assetsToRender,Resources.Background, Point.Empty, 0,1,1), RenderType.Background);
             //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
 
             players.Add(new Player("1",new Point(0,0),0,car1,new List<Keys>(){Keys.W,Keys.S,Keys.A,Keys.D}));
             players.Add(new Player("2", new Point(0,50),0,car2,new List<Keys>(){Keys.Up,Keys.Down,Keys.Left,Keys.Right}));
+            
        }
 
         private void GameUpdate(object sender, EventArgs e)
@@ -71,6 +79,25 @@ namespace RaceGame
             AddInputs();
         }
 
+        private void InfoUpdate(object sender, EventArgs e)
+        {
+            int count = 1;
+            foreach (Player p in players)
+            {
+                if (count == 1)
+                {
+                    Player1Info = p.GetInfo();
+                    count++;
+                }
+                else if(count == 2)
+                {
+                    Player2Info = p.GetInfo();
+                    count--;
+                }
+            }
+            Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0] + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "\r\nPits: " + (int)Player1Info[3];
+            Meter2.Text = "Player 2\r\n" + (int)Player2Info[0] + " :Speed\r\n" + (int)Player2Info[1] + " :Fuel\r\n" + (int)Player2Info[2] + " :Laps\r\n" + (int)Player2Info[3] + " :Pits";
+        }
         private void SetKeysUp(object sender, KeyEventArgs e)
         {
             if (currentInput.Contains(e.KeyCode))
