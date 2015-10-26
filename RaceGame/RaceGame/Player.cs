@@ -143,7 +143,10 @@ namespace RaceGame
                     avg += val;
                 }
                 avg /= 10;
-                fuelRemaining -= avg*0.4f;
+                if (fuelRemaining > 0)
+                {
+                    fuelRemaining -= avg * 0.4f;
+                }  
                 fuelCalcCounter = 0;
                 if (playerCar.currentSpeed < 0)
                 {
@@ -153,6 +156,10 @@ namespace RaceGame
                 {
                     fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed/playerCar.maxSpeed;
                 }
+            }
+            if (fuelRemaining <= 0)
+            {
+                playerCar.maxSpeed /= 2;
             }
         }
     }

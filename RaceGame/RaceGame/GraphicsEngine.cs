@@ -20,8 +20,7 @@ namespace RaceGame
     {
         Background,
         Player,
-        Props,
-        Info
+        Props
     }
 
 
@@ -44,7 +43,6 @@ namespace RaceGame
         static List<Asset> backgroundAssets = new List<Asset>();
         static List<Asset> playerAssets = new List<Asset>();
         static List<Asset> propAssets = new List<Asset>();
-        static List<Asset> infoAssets = new List<Asset>();
         Point newPointOfAsset;
 
         public GraphicsEngine(Graphics dHandle)
@@ -148,18 +146,6 @@ namespace RaceGame
             }
         }
 
-        public void InfoThread()
-        {
-            lock (rendering)
-            {
-                for (int i = 0; i < infoAssets.Count; i++)
-                {
-                    Bitmap tempImage = new Bitmap(infoAssets[i].imageToDisplay);
-                    graphicsBuffer.DrawImage(tempImage, infoAssets[i].pointOfAsset);
-                    tempImage.Dispose();
-                }
-            }
-        }
         public void Stop()
         {
             mainRenderThread.Abort();
@@ -183,10 +169,6 @@ namespace RaceGame
                         case RenderType.Props:
                             propAssets.Add(assetToRender);
                             //add on top of props
-                            break;
-                        case RenderType.Info:
-                            infoAssets.Add(assetToRender);
-                            //add on top of info
                             break;
                 }
             }
