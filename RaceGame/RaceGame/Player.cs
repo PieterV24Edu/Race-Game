@@ -19,6 +19,7 @@ namespace RaceGame
         bool F, B, L, R;
         int fuelCalcCounter = 0;
         float[] fuelCalcVal = new float[10];
+        bool fuelSlow = false;
         
         Car playerCar;
         List<Keys> playerKeys;
@@ -157,9 +158,10 @@ namespace RaceGame
                     fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed/playerCar.maxSpeed;
                 }
             }
-            if (fuelRemaining <= 0)
+            if (fuelRemaining <= 0 && fuelSlow == false)
             {
-                playerCar.maxSpeed /= 2;
+                playerCar.maxSpeed = playerCar.maxSpeed / 2;
+                fuelSlow = true;
             }
         }
     }

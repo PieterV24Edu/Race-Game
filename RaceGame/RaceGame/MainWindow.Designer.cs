@@ -52,7 +52,7 @@
             this.Meter1.Name = "Meter1";
             this.Meter1.Size = new System.Drawing.Size(36, 13);
             this.Meter1.TabIndex = 3;
-            this.Meter1.Text = "Empty";
+            this.Meter1.Text = "Player 1\r\nSpeed: 0\r\nFuel: 100\r\nLaps: 0\r\nPits: 0";
             // 
             // Meter2
             // 
@@ -62,7 +62,7 @@
             this.Meter2.Name = "Meter2";
             this.Meter2.Size = new System.Drawing.Size(36, 13);
             this.Meter2.TabIndex = 4;
-            this.Meter2.Text = "Empty";
+            this.Meter2.Text = "Player 2\r\n0 :Speed\r\n100 :Fuel\r\n0 :Laps\r\n0 :Pits";
             this.Meter2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // MainWindow

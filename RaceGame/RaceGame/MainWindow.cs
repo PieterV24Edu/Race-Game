@@ -56,7 +56,7 @@ namespace RaceGame
             GameTimer.Tick += new EventHandler(GameUpdate);
             GameTimer.Start();
 
-            InfoTimer.Interval = 100;
+            InfoTimer.Interval = 1000;
             InfoTimer.Tick += new EventHandler(InfoUpdate);
             InfoTimer.Start();
 
