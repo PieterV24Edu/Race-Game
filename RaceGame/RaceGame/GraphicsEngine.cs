@@ -4,14 +4,13 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Threading;
-using System.Windows.Forms;
+using RaceGame.Properties;
 using Timer = System.Threading.Timer;
 
 namespace RaceGame
 {
     enum RenderType
     {
-        Background,
         Player,
         Props
     }
@@ -27,10 +26,7 @@ namespace RaceGame
         Graphics graphicsBuffer;
         Graphics drawHandle;
         Bitmap backBuffer;
-        Thread mainRenderThread;
-        Timer debugThread;
         
-        static List<Asset> backgroundAssets = new List<Asset>();
         static List<Asset> playerAssets = new List<Asset>();
         static List<Asset> propAssets = new List<Asset>();
         Point newPointOfAsset;
@@ -40,48 +36,29 @@ namespace RaceGame
             drawHandle = dHandle;
         }
 
-        public void Start()
+        public void GraphicsUpdate(object o)
         {
-            mainRenderThread = new Thread(new ThreadStart(GraphicsUpdate));
-            mainRenderThread.Start();
-        }
 
-        private void GraphicsUpdate()
-        {
             backBuffer = new Bitmap(MainWindow.screenSize.Width, MainWindow.screenSize.Height);
             graphicsBuffer = Graphics.FromImage(backBuffer);
 
-            while (true)
-            {
+            graphicsBuffer.ResetTransform();
+
                 if (graphicsBuffer != null)
                 {
-                    graphicsBuffer.ResetTransform();
+                    graphicsBuffer.Clear(Color.Green);                    
                 }
+
+                Bitmap temp = new Bitmap(Resources.Background, 1011, 729);
+
+                graphicsBuffer.DrawImage(temp, new PointF(0, 0));
+                temp.Dispose();
 
                 PlayerThread();
 
                 drawHandle.DrawImage(backBuffer, 0,0);
                 frames++;
 
-            }
-        }
-
-        public void BackgroundThread()
-        {
-            lock (rendering)
-            {
-                graphicsBuffer.Clear(Color.Green);
-
-                for (int i = 0; i < backgroundAssets.Count; i++)
-                {
-
-                    Bitmap tempImage = new Bitmap(backgroundAssets[i].imageToDisplay);
-
-                    graphicsBuffer.DrawImage(backgroundAssets[i].imageToDisplay, backgroundAssets[i].pointOfAsset);
-
-                    tempImage.Dispose();
-                }
-            }
         }
 
         public void PlayerThread()
@@ -122,7 +99,7 @@ namespace RaceGame
 
         public void Stop()
         {
-            mainRenderThread.Abort();
+            
         }
 
         public static void AddAsset(Asset assetToRender, RenderType type)
@@ -131,10 +108,6 @@ namespace RaceGame
             {
                 switch (type)
                 {
-                        case RenderType.Background:
-                            backgroundAssets.Add(assetToRender);
-                            //add on top of backgrounds
-                            break;
                         case RenderType.Player:
                             playerAssets.Add(assetToRender);
                             //add on top of players

@@ -54,7 +54,7 @@ namespace RaceGame
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.DoubleBuffer, true);
 
-            GameTimer.Interval = 100;
+            GameTimer.Interval = 10;
             GameTimer.Tick += new EventHandler(GameUpdate);
             GameTimer.Start();
 
@@ -62,28 +62,26 @@ namespace RaceGame
             InfoTimer.Tick += new EventHandler(InfoUpdate);
             InfoTimer.Start();
 
-            this.Paint += new PaintEventHandler(Draw);
             this.KeyDown += new KeyEventHandler(SetKeysDown);
             this.KeyUp += new KeyEventHandler(SetKeysUp);
             
-            GraphicsEngine.AddAsset(new Asset(GraphicsEngine.assetsToRender,Resources.Background, Point.Empty, 0,1,1), RenderType.Background);
             //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
 
             players.Add(new Player("1",new Point(0,0),0,car1,new List<Keys>(){Keys.W,Keys.S,Keys.A,Keys.D}));
             players.Add(new Player("2", new Point(0,50),0,car2,new List<Keys>(){Keys.Up,Keys.Down,Keys.Left,Keys.Right}));
-            
+
+            //inits graphics engine with a graphics handle
+            Graphics g = canvas.CreateGraphics();
+            gEngine = new GraphicsEngine(g);
        }
 
         private void GameUpdate(object sender, EventArgs e)
         {
             time ++;
 
-            Graphics g = canvas.CreateGraphics();
-            gEngine = new GraphicsEngine(g);
-            gEngine.Start();
-            
-
             AddInputs();
+            gEngine.GraphicsUpdate(null);
+            Invalidate();
         }
 
         private void InfoUpdate(object sender, EventArgs e)
@@ -125,19 +123,9 @@ namespace RaceGame
             }
         }
 
-        private void Draw(object sender, PaintEventArgs e)
-        {
-
-            //Graphics g = canvas.CreateGraphics();
-            //gEngine = new GraphicsEngine(g);
-            //gEngine.Start();
-            
-
-        }
-
         private void Exit(object sender, FormClosedEventHandler e)
         {
-            gEngine.Stop();
+            Invalidate();
         }
 
         private void AddInputs()
@@ -155,6 +143,7 @@ namespace RaceGame
         {
             gEngine.Stop();
         }
+
     }
 
 }

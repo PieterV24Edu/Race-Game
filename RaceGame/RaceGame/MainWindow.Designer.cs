@@ -28,23 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.canvas = new System.Windows.Forms.PictureBox();
             this.Meter1 = new System.Windows.Forms.Label();
             this.Meter2 = new System.Windows.Forms.Label();
+            this.canvas = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
-            // 
-            // canvas
-            // 
-            this.canvas.BackColor = System.Drawing.Color.ForestGreen;
-            this.canvas.BackgroundImage = global::RaceGame.Properties.Resources.Background;
-            this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.canvas.Location = new System.Drawing.Point(-1, -1);
-            this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1011, 729);
-            this.canvas.TabIndex = 2;
-            this.canvas.TabStop = false;
-            this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Draw);
             // 
             // Meter1
             // 
@@ -66,6 +54,17 @@
             this.Meter2.TabIndex = 4;
             this.Meter2.Text = "Player 2\r\n0 :Speed\r\n100 :Fuel\r\n0 :Laps\r\n0 :Pits";
             this.Meter2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // canvas
+            // 
+            this.canvas.BackColor = System.Drawing.Color.ForestGreen;
+            this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.canvas.Cursor = System.Windows.Forms.Cursors.Default;
+            this.canvas.Location = new System.Drawing.Point(-1, -1);
+            this.canvas.Name = "canvas";
+            this.canvas.Size = new System.Drawing.Size(1011, 729);
+            this.canvas.TabIndex = 2;
+            this.canvas.TabStop = false;
             // 
             // MainWindow
             // 
