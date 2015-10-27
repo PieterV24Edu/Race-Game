@@ -44,6 +44,22 @@ namespace RaceGame
         {
             return new double[4] {playerCar.currentSpeed, fuelRemaining, roundsElapsed, pitStops};
         }
+
+        public Point GetCarPos()
+        {
+            return playerCar.pos;
+        }
+
+        public float GetCarRot()
+        {
+            return playerCar.rot;
+        }
+
+        public Size GetScale()
+        {
+            return new Size((int)playerCar.scaleX,(int)playerCar.scaleY);
+        }
+
         public void CompareInput(Keys keyToCompare)
         {
             if (!playerKeys.Contains(keyToCompare))

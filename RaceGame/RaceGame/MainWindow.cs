@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Configuration;
+using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace RaceGame
         Timer InfoTimer = new Timer();
 
         List<Player> players = new List<Player>();
+        GraphicsPath path = new GraphicsPath();
 
         Bitmap car1 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carCyan.png"));
         Bitmap car2 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carDarkGreen.png"));
@@ -52,7 +54,7 @@ namespace RaceGame
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.DoubleBuffer, true);
 
-            GameTimer.Interval = 10;
+            GameTimer.Interval = 100;
             GameTimer.Tick += new EventHandler(GameUpdate);
             GameTimer.Start();
 
@@ -75,7 +77,12 @@ namespace RaceGame
         private void GameUpdate(object sender, EventArgs e)
         {
             time ++;
+
+            Graphics g = canvas.CreateGraphics();
+            gEngine = new GraphicsEngine(g);
+            gEngine.Start();
             
+
             AddInputs();
         }
 
@@ -121,11 +128,11 @@ namespace RaceGame
         private void Draw(object sender, PaintEventArgs e)
         {
 
-            Graphics g = canvas.CreateGraphics();
-            gEngine = new GraphicsEngine(g);
-            gEngine.Start();
-
+            //Graphics g = canvas.CreateGraphics();
+            //gEngine = new GraphicsEngine(g);
+            //gEngine.Start();
             
+
         }
 
         private void Exit(object sender, FormClosedEventHandler e)

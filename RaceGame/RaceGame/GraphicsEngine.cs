@@ -3,16 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Remoting.Messaging;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using RaceGame.Properties;
+using Timer = System.Threading.Timer;
 
 namespace RaceGame
 {
@@ -23,22 +16,19 @@ namespace RaceGame
         Props
     }
 
-
     class GraphicsEngine
     {
-        static object shadowLock = new object();
         static object rendering = new object();
         public static int assetsToRender = 0;
 
         public int frames;
         public int startTime;
 
-        Graphics backgroundBuffer;
         Graphics graphicsBuffer;
         Graphics drawHandle;
         Bitmap backBuffer;
         Thread mainRenderThread;
-        //Thread debugThread;
+        Timer debugThread;
         
         static List<Asset> backgroundAssets = new List<Asset>();
         static List<Asset> playerAssets = new List<Asset>();
@@ -54,10 +44,6 @@ namespace RaceGame
         {
             mainRenderThread = new Thread(new ThreadStart(GraphicsUpdate));
             mainRenderThread.Start();
-
-            //debugThread = new Thread(new ThreadStart(DebugThread));
-            //debugThread.Start();
-
         }
 
         private void GraphicsUpdate()
@@ -69,16 +55,14 @@ namespace RaceGame
             {
                 if (graphicsBuffer != null)
                 {
-                    graphicsBuffer.Clear(Color.Green);
+                    graphicsBuffer.ResetTransform();
                 }
 
-                graphicsBuffer.ResetTransform();
-
-                BackgroundThread();
                 PlayerThread();
 
-                drawHandle.DrawImage(backBuffer, 0, 0);
+                drawHandle.DrawImage(backBuffer, 0,0);
                 frames++;
+
             }
         }
 
@@ -86,23 +70,14 @@ namespace RaceGame
         {
             lock (rendering)
             {
+                graphicsBuffer.Clear(Color.Green);
 
                 for (int i = 0; i < backgroundAssets.Count; i++)
                 {
+
                     Bitmap tempImage = new Bitmap(backgroundAssets[i].imageToDisplay);
 
-                    float x = MainWindow.screenSize.Width;
-                    float y = MainWindow.screenSize.Height;
-
-                    x /= tempImage.Width;
-                    y /= tempImage.Height;
-
-                    x = Math.Abs(x);
-                    y = Math.Abs(y);
-
-                    graphicsBuffer.ScaleTransform(x, y);
-
-                    graphicsBuffer.DrawImage(tempImage, backgroundAssets[i].pointOfAsset);
+                    graphicsBuffer.DrawImage(backgroundAssets[i].imageToDisplay, backgroundAssets[i].pointOfAsset);
 
                     tempImage.Dispose();
                 }
@@ -113,7 +88,6 @@ namespace RaceGame
         {
             lock (rendering)
             {
-                graphicsBuffer.ResetTransform();
 
                 for (int i = 0; i < playerAssets.Count; i++)
                 {
@@ -149,7 +123,6 @@ namespace RaceGame
         public void Stop()
         {
             mainRenderThread.Abort();
-            //debugThread.Abort();
         }
 
         public static void AddAsset(Asset assetToRender, RenderType type)
@@ -211,20 +184,5 @@ namespace RaceGame
                 }
             }
         }
-        
-        /*public void DebugThread()
-        {
-            while (true)
-            {
-
-                if (Environment.TickCount >= startTime + 1000)
-                {
-                    Debug.Print("FPS: "+frames);
-                    frames = 0;
-                    startTime = Environment.TickCount;
-                }
-            }
-        }*/
-
     }
 }
