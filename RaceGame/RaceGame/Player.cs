@@ -60,6 +60,15 @@ namespace RaceGame
             return new Size((int)playerCar.scaleX,(int)playerCar.scaleY);
         }
 
+        public int GetImageWidth()
+        {
+            return playerCar.image.Width;
+        }
+        public int GetImageHeight()
+        {
+            return playerCar.image.Height;
+        }
+
         public void CompareInput(Keys keyToCompare)
         {
             if (!playerKeys.Contains(keyToCompare))
@@ -178,7 +187,7 @@ namespace RaceGame
             {
                 playerCar.maxSpeed = playerCar.maxSpeed / 2;
                 fuelSlow = true;
-            }
+            }    
         }
     }
 }

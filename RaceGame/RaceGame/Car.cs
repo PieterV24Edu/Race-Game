@@ -17,7 +17,7 @@ namespace RaceGame
         public float scaleX,scaleY;
 
         int playerId;
-        public int maxSpeed =12;
+        public int maxSpeed =20;
         public float accStep = 0.5f;
         Timer carTimer = new Timer();
 

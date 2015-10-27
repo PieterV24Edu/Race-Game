@@ -58,9 +58,9 @@ namespace RaceGame
             GameTimer.Tick += new EventHandler(GameUpdate);
             GameTimer.Start();
 
-            InfoTimer.Interval = 1000;
-            InfoTimer.Tick += new EventHandler(InfoUpdate);
-            InfoTimer.Start();
+            //InfoTimer.Interval = 1000;
+            //InfoTimer.Tick += new EventHandler(InfoUpdate);
+            //InfoTimer.Start();
 
             this.KeyDown += new KeyEventHandler(SetKeysDown);
             this.KeyUp += new KeyEventHandler(SetKeysUp);
@@ -68,7 +68,7 @@ namespace RaceGame
             //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
 
             players.Add(new Player("1",new Point(0,0),0,car1,new List<Keys>(){Keys.W,Keys.S,Keys.A,Keys.D}));
-            players.Add(new Player("2", new Point(0,50),0,car2,new List<Keys>(){Keys.Up,Keys.Down,Keys.Left,Keys.Right}));
+            //players.Add(new Player("2", new Point(0,50),0,car2,new List<Keys>(){Keys.Up,Keys.Down,Keys.Left,Keys.Right}));
 
             //inits graphics engine with a graphics handle
             Graphics g = canvas.CreateGraphics();
@@ -81,12 +81,33 @@ namespace RaceGame
 
             AddInputs();
             gEngine.GraphicsUpdate(null);
+            InfoUpdate(null,null);
+
+            foreach (Player p in players)
+            {
+                Size size = new Size( (int)Math.Ceiling(p.GetImageWidth()*p.GetScale().Width*1.0f),(int)Math.Ceiling(p.GetImageHeight()*p.GetScale().Height*1.0f));
+                Rectangle rect = new Rectangle(p.GetCarPos(),size);
+
+
+                if (canvas.Bounds.Contains(rect))
+                {
+                    Debug.Print(rect.X+" "+rect.Width+"");
+                    for (int i = rect.X; i <rect.X+rect.Width; i++)
+                    {
+                        for (int j = rect.Y; j < rect.Y+rect.Height; j++)
+                        {
+                        }
+                    }
+                }
+            }
+
             Invalidate();
         }
 
         private void InfoUpdate(object sender, EventArgs e)
         {
             int count = 1;
+
             foreach (Player p in players)
             {
                 if (count == 1)
@@ -100,9 +121,11 @@ namespace RaceGame
                     count--;
                 }
             }
-            Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0] + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "\r\nPits: " + (int)Player1Info[3];
+
+            Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0]*5 + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "\r\nPits: " + (int)Player1Info[3];
             Meter2.Text = "Player 2\r\n" + (int)Player2Info[0] + " :Speed\r\n" + (int)Player2Info[1] + " :Fuel\r\n" + (int)Player2Info[2] + " :Laps\r\n" + (int)Player2Info[3] + " :Pits";
         }
+
         private void SetKeysUp(object sender, KeyEventArgs e)
         {
             if (currentInput.Contains(e.KeyCode))
@@ -123,7 +146,7 @@ namespace RaceGame
             }
         }
 
-        private void Exit(object sender, FormClosedEventHandler e)
+        private void Exit(object sender, FormClosedEventArgs e)
         {
             Invalidate();
         }
@@ -137,11 +160,6 @@ namespace RaceGame
                     p.CompareInput(k);
                 }
             }
-        }
-
-        private void Exit(object sender, FormClosedEventArgs e)
-        {
-            gEngine.Stop();
         }
 
     }

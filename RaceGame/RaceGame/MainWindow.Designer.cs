@@ -58,11 +58,12 @@
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.Color.ForestGreen;
-            this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.canvas.Cursor = System.Windows.Forms.Cursors.Default;
-            this.canvas.Location = new System.Drawing.Point(-1, -1);
+            this.canvas.Location = new System.Drawing.Point(-2, -1);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1011, 729);
+            this.canvas.Size = new System.Drawing.Size(1013, 729);
             this.canvas.TabIndex = 2;
             this.canvas.TabStop = false;
             // 

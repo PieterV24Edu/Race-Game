@@ -17,7 +17,6 @@ namespace RaceGame
 
     class GraphicsEngine
     {
-        static object rendering = new object();
         public static int assetsToRender = 0;
 
         public int frames;
@@ -39,6 +38,7 @@ namespace RaceGame
         public void GraphicsUpdate(object o)
         {
 
+
             backBuffer = new Bitmap(MainWindow.screenSize.Width, MainWindow.screenSize.Height);
             graphicsBuffer = Graphics.FromImage(backBuffer);
 
@@ -49,7 +49,7 @@ namespace RaceGame
                     graphicsBuffer.Clear(Color.Green);                    
                 }
 
-                Bitmap temp = new Bitmap(Resources.Background, 1011, 729);
+                Bitmap temp = new Bitmap(Resources.Background, MainWindow.screenSize.Width, MainWindow.screenSize.Height);
 
                 graphicsBuffer.DrawImage(temp, new PointF(0, 0));
                 temp.Dispose();
@@ -59,13 +59,17 @@ namespace RaceGame
                 drawHandle.DrawImage(backBuffer, 0,0);
                 frames++;
 
+                //if (Environment.TickCount >= startTime + 1000)
+                //{
+                //    Debug.Print("FPS: " + frames);
+                //    frames = 0;
+                //    startTime = Environment.TickCount;
+                //}
+
         }
 
         public void PlayerThread()
         {
-            lock (rendering)
-            {
-
                 for (int i = 0; i < playerAssets.Count; i++)
                 {
                     Matrix rotate = new Matrix();
@@ -81,31 +85,21 @@ namespace RaceGame
 
                     graphicsBuffer.DrawImage(playerAssets[i].imageToDisplay, playerAssets[i].pointOfAsset);
                 }
-            }
+
         }
 
         public void PropsThread()
         {
-            lock (rendering)
-            {
                 for (int i = 0; i < propAssets.Count; i++)
                 {
                     Bitmap tempImage = new Bitmap(propAssets[i].imageToDisplay);
                     graphicsBuffer.DrawImage(tempImage, propAssets[i].pointOfAsset);
                     tempImage.Dispose();
                 }
-            }
-        }
-
-        public void Stop()
-        {
-            
         }
 
         public static void AddAsset(Asset assetToRender, RenderType type)
         {
-            lock (rendering)
-            {
                 switch (type)
                 {
                         case RenderType.Player:
@@ -117,8 +111,6 @@ namespace RaceGame
                             //add on top of props
                             break;
                 }
-            }
-
         }
 
         public static void UpdatePos(int assetId , Point pos)
