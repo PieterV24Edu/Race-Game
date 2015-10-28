@@ -15,7 +15,7 @@ namespace RaceGame
         string name;
         
         int roundsElapsed = 0;
-        float fuelRemaining = 100;
+        float fuelRemaining = 90;
         int pitStops = 0;
         bool F, B, L, R;
         int fuelCalcCounter = 0;
@@ -24,13 +24,12 @@ namespace RaceGame
         bool canMove = true;
         bool grassSlow = false;
 
-        GraphicsEngine Engine;
         Color pixelColor;
 
         Car playerCar;
         List<Keys> playerKeys;
 
-        public Player(string name, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse, GraphicsEngine gEngine)
+        public Player(string name, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse)
         {
             this.name = name;
             this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,0.25f,0.25f);
@@ -38,7 +37,7 @@ namespace RaceGame
 
             //register with graphicsEngine
             GraphicsEngine.AddAsset(new Asset(++GraphicsEngine.assetsToRender,playerCar.image,playerCar.pos,playerCar.rot,playerCar.scaleX,playerCar.scaleY),RenderType.Player);
-            Engine = gEngine;
+
             Timer playerTimer = new Timer();
             playerTimer.Interval = 1;
             playerTimer.Tick += Timer_Tick;
@@ -178,66 +177,6 @@ namespace RaceGame
                 {
                     playerCar.Decellerate();
                 }
-            
-            if (fuelCalcCounter < 10)
-            {
-                if (playerCar.currentSpeed < 0)
-                {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed*-1/playerCar.maxSpeed;
-                }
-                else
-                {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed/playerCar.maxSpeed;
-                }
-                fuelCalcCounter++;
-            }
-            else if (fuelCalcCounter == 10)
-            {
-                float avg = 0;
-                foreach (float val in fuelCalcVal)
-                {
-                    avg += val;
-                }
-                avg /= 10;
-                if (fuelRemaining > 0)
-                {
-                    fuelRemaining -= avg * 0.4f;
-                }  
-                fuelCalcCounter = 0;
-                if (playerCar.currentSpeed < 0)
-                {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed * -1/playerCar.maxSpeed;
-                }
-                else
-                {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed/playerCar.maxSpeed;
-                }
-            }
-            if (fuelRemaining <= 0 && fuelSlow == false)
-            {
-                playerCar.maxSpeed /= 2;
-                fuelSlow = true;
-            }    
-            else if (fuelRemaining > 0 && fuelSlow)
-            {
-                playerCar.maxSpeed *= 2;
-                fuelSlow = false;
-            }
-
-            Bitmap BackgroundImage = new Bitmap(Resources.Background);
-            pixelColor = BackgroundImage.GetPixel(GetCarPos().X /* GetScale().Width*/, GetCarPos().Y /* GetScale().Height*/);
-            Debug.Print(playerCar.maxSpeed + "");
-
-            if (pixelColor == Color.FromArgb(0,0,0,0) && grassSlow == false)
-            {
-                playerCar.maxSpeed /= 2;
-                grassSlow = true;
-            }
-            else if (pixelColor != Color.FromArgb(0, 0, 0, 0) && grassSlow)
-            {
-                playerCar.maxSpeed *= 2;
-                fuelSlow = false;
-            }
         }
     }
 }

@@ -82,11 +82,6 @@ namespace RaceGame
                     
                     graphicsBuffer.Transform = rotate;
 
-<<<<<<< HEAD
-=======
-                    //graphicsBuffer.ScaleTransform(playerAssets[i].scaleX, playerAssets[i].scaleY,MatrixOrder.Append);
-
->>>>>>> origin/Pieter
                     graphicsBuffer.DrawImage(playerAssets[i].imageToDisplay, playerAssets[i].pointOfAsset);
                 }
 

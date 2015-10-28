@@ -43,13 +43,10 @@ namespace RaceGame
 
         Bitmap car1 = new Bitmap(Resources.carCyan);
         Bitmap car2 = new Bitmap(Resources.carDarkGreen);
-<<<<<<< HEAD
 
         Rectangle pitStopPoint = new Rectangle(481, 604, 40, 96);
 
         int counter = 0;
-=======
->>>>>>> origin/Pieter
 
         public MainWindow()
         {
@@ -64,11 +61,6 @@ namespace RaceGame
             GameTimer.Tick += new EventHandler(GameUpdate);
             GameTimer.Start();
 
-<<<<<<< HEAD
-            this.KeyDown += new KeyEventHandler(SetKeysDown);
-            this.KeyUp += new KeyEventHandler(SetKeysUp);
-            
-=======
             InfoTimer.Interval = 100;
             InfoTimer.Tick += new EventHandler(InfoUpdate);
             InfoTimer.Start();
@@ -76,22 +68,16 @@ namespace RaceGame
             this.KeyDown += new KeyEventHandler(SetKeysDown);
             this.KeyUp += new KeyEventHandler(SetKeysUp);
 
->>>>>>> origin/Pieter
             //inits graphics engine with a graphics handle
             Graphics g = canvas.CreateGraphics();
             gEngine = new GraphicsEngine(g);
 
             //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
 
-<<<<<<< HEAD
             players.Add(new Player("1", new Point(0, 0), 0, car1, new List<Keys>() { Keys.W, Keys.S, Keys.A, Keys.D }));
             players.Add(new Player("2", new Point(0, 50), 0, car2, new List<Keys>() { Keys.Up, Keys.Down, Keys.Left, Keys.Right }));
-       }
-=======
-            players.Add(new Player("1", new Point(0, 0), 0, car1, new List<Keys>() { Keys.W, Keys.S, Keys.A, Keys.D }, gEngine));
-            players.Add(new Player("2", new Point(0, 50), 0, car2, new List<Keys>() { Keys.Up, Keys.Down, Keys.Left, Keys.Right }, gEngine));
+
         }
->>>>>>> origin/Pieter
 
         private void GameUpdate(object sender, EventArgs e)
         {
@@ -99,8 +85,6 @@ namespace RaceGame
 
             AddInputs();
             gEngine.GraphicsUpdate(null);
-<<<<<<< HEAD
-            InfoUpdate(null,null);
 
             counter = 0;
 
@@ -119,9 +103,6 @@ namespace RaceGame
 
             }
 
-=======
-            
->>>>>>> origin/Pieter
             Invalidate();
         }
 
