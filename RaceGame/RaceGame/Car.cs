@@ -57,7 +57,22 @@ namespace RaceGame
         private void MoveCar(object sender, ElapsedEventArgs e)
         {
             pos = CalcMovePoint(currentSpeed, rot);
-
+            /*if (pos.X < 0)
+            {
+                pos.X = 0;
+            }
+            if (pos.X > 1011)
+            {
+                pos.X = 1011;
+            }
+            if (pos.Y < 0)
+            {
+                pos.Y = 0;
+            }
+            if (pos.Y > 729)
+            {
+                pos.Y = 729;
+            }*/
             GraphicsEngine.UpdatePos(playerId, pos);
         }
 
@@ -94,14 +109,14 @@ namespace RaceGame
 
         public void SteerLeft()
         {
-            rot -= 5;
+            rot -= 10;
             Decellerate();
             GraphicsEngine.UpdateRot(playerId,rot);
         }
 
         public void SteerRight()
         {
-            rot += 5;
+            rot += 10;
             Decellerate();
             GraphicsEngine.UpdateRot(playerId, rot);
         }
