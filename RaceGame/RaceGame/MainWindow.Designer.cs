@@ -61,9 +61,9 @@
             this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.canvas.Cursor = System.Windows.Forms.Cursors.Default;
-            this.canvas.Location = new System.Drawing.Point(-2, -1);
+            this.canvas.Location = new System.Drawing.Point(-1, -3);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1013, 729);
+            this.canvas.Size = new System.Drawing.Size(1014, 736);
             this.canvas.TabIndex = 2;
             this.canvas.TabStop = false;
             // 

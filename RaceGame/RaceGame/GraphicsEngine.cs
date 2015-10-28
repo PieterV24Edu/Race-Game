@@ -77,11 +77,10 @@ namespace RaceGame
                     newPointOfAsset.X = Convert.ToInt32(playerAssets[i].pointOfAsset.X + (playerAssets[i].imageToDisplay.Width / 2));
                     newPointOfAsset.Y = Convert.ToInt32(playerAssets[i].pointOfAsset.Y + (playerAssets[i].imageToDisplay.Height / 2));
 
+                    rotate.Scale(playerAssets[i].scaleX,playerAssets[i].scaleY);
                     rotate.RotateAt(playerAssets[i].rotationOfAsset,newPointOfAsset);
                     
                     graphicsBuffer.Transform = rotate;
-
-                    graphicsBuffer.ScaleTransform(playerAssets[i].scaleX, playerAssets[i].scaleY,MatrixOrder.Append);
 
                     graphicsBuffer.DrawImage(playerAssets[i].imageToDisplay, playerAssets[i].pointOfAsset);
                 }

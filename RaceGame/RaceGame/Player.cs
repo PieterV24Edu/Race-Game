@@ -20,6 +20,7 @@ namespace RaceGame
         int fuelCalcCounter = 0;
         float[] fuelCalcVal = new float[10];
         bool fuelSlow = false;
+        bool canMove = true;
         
         Car playerCar;
         List<Keys> playerKeys;
@@ -55,9 +56,14 @@ namespace RaceGame
             return playerCar.rot;
         }
 
-        public Size GetScale()
+        public float GetScaleX()
         {
-            return new Size((int)playerCar.scaleX,(int)playerCar.scaleY);
+            return playerCar.scaleX;
+        }
+
+        public float GetScaleY()
+        {
+            return playerCar.scaleY;
         }
 
         public int GetImageWidth()
@@ -67,6 +73,23 @@ namespace RaceGame
         public int GetImageHeight()
         {
             return playerCar.image.Height;
+        }
+
+        public void Refuel()
+        {
+
+            if (fuelRemaining<100)
+            {
+                playerCar.currentSpeed = 2;
+
+                fuelRemaining++;
+                canMove = false;
+            }
+            if (fuelRemaining >= 100)
+            {
+                canMove = true;
+            }
+
         }
 
         public void CompareInput(Keys keyToCompare)
@@ -115,6 +138,8 @@ namespace RaceGame
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            if (!canMove) {  Refuel();   return; }
+
             if (F)
             {
                 playerCar.Accelerate('F');

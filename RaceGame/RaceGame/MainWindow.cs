@@ -40,10 +40,13 @@ namespace RaceGame
         Timer InfoTimer = new Timer();
 
         List<Player> players = new List<Player>();
-        GraphicsPath path = new GraphicsPath();
 
-        Bitmap car1 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carCyan.png"));
-        Bitmap car2 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carDarkGreen.png"));
+        Bitmap car1 = new Bitmap(Resources.carCyan);
+        Bitmap car2 = new Bitmap(Resources.carDarkGreen);
+
+        Rectangle pitStopPoint = new Rectangle(481, 604, 40, 96);
+
+        int counter = 0;
 
         public MainWindow()
         {
@@ -58,21 +61,17 @@ namespace RaceGame
             GameTimer.Tick += new EventHandler(GameUpdate);
             GameTimer.Start();
 
-            //InfoTimer.Interval = 1000;
-            //InfoTimer.Tick += new EventHandler(InfoUpdate);
-            //InfoTimer.Start();
-
             this.KeyDown += new KeyEventHandler(SetKeysDown);
             this.KeyUp += new KeyEventHandler(SetKeysUp);
             
-            //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
-
-            players.Add(new Player("1",new Point(0,0),0,car1,new List<Keys>(){Keys.W,Keys.S,Keys.A,Keys.D}));
-            //players.Add(new Player("2", new Point(0,50),0,car2,new List<Keys>(){Keys.Up,Keys.Down,Keys.Left,Keys.Right}));
-
             //inits graphics engine with a graphics handle
             Graphics g = canvas.CreateGraphics();
             gEngine = new GraphicsEngine(g);
+
+            //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
+
+            players.Add(new Player("1", new Point(0, 0), 0, car1, new List<Keys>() { Keys.W, Keys.S, Keys.A, Keys.D }));
+            players.Add(new Player("2", new Point(0, 50), 0, car2, new List<Keys>() { Keys.Up, Keys.Down, Keys.Left, Keys.Right }));
        }
 
         private void GameUpdate(object sender, EventArgs e)
@@ -83,22 +82,21 @@ namespace RaceGame
             gEngine.GraphicsUpdate(null);
             InfoUpdate(null,null);
 
+            counter = 0;
+
             foreach (Player p in players)
             {
-                Size size = new Size( (int)Math.Ceiling(p.GetImageWidth()*p.GetScale().Width*1.0f),(int)Math.Ceiling(p.GetImageHeight()*p.GetScale().Height*1.0f));
-                Rectangle rect = new Rectangle(p.GetCarPos(),size);
 
+                float newX = p.GetCarPos().X;
+                float newY = p.GetCarPos().Y;
+                
+                newX = Math.Abs(newX * p.GetScaleX());
+                newY = Math.Abs(newY * p.GetScaleY());
 
-                if (canvas.Bounds.Contains(rect))
-                {
-                    Debug.Print(rect.X+" "+rect.Width+"");
-                    for (int i = rect.X; i <rect.X+rect.Width; i++)
-                    {
-                        for (int j = rect.Y; j < rect.Y+rect.Height; j++)
-                        {
-                        }
-                    }
-                }
+                Inside(counter,new Rectangle(new Point((int)newX, (int)newY), new Size((int)p.GetImageWidth() * (int)p.GetScaleX(), (int)p.GetImageHeight() *(int)p.GetScaleY())));
+                
+                counter++;
+
             }
 
             Invalidate();
@@ -159,6 +157,29 @@ namespace RaceGame
                 {
                     p.CompareInput(k);
                 }
+            }
+        }
+
+        public bool Inside(int playerNr,Rectangle rectToCompare)
+        {
+            bool insideX = false, insideY = false;
+
+            int width = pitStopPoint.Width;
+            int height = pitStopPoint.Height;
+
+            Rectangle pitRect = new Rectangle(pitStopPoint.X, pitStopPoint.Y, width, height);
+
+            canvas.CreateGraphics().DrawRectangle(new Pen(Color.Blue), pitRect);
+
+            if (pitRect.Contains(rectToCompare))
+            {
+                players[playerNr].Refuel();
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

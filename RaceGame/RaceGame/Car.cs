@@ -120,7 +120,5 @@ namespace RaceGame
 
             return new Point(px,py);
         }
-
-
     }
 }
