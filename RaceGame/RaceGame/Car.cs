@@ -5,16 +5,20 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using System.Windows.Forms;
+using RaceGame.Properties;
+using Timer = System.Timers.Timer;
 
 namespace RaceGame
 {
     class Car
     {
-        public Bitmap image;
+        public Bitmap image = new Bitmap(Resources.carCyan);
         public Point pos;
         public float currentSpeed = 0;
         public int rot;
         public float scaleX,scaleY;
+        Point imageSize;
 
         int playerId;
         public int maxSpeed =20;
@@ -52,27 +56,28 @@ namespace RaceGame
             carTimer.Start();
 
             GraphicsEngine.UpdateScale(playerId,scaleX,scaleY);
+            imageSize = new Point(image.Width, image.Height);
         }
 
         private void MoveCar(object sender, ElapsedEventArgs e)
         {
             pos = CalcMovePoint(currentSpeed, rot);
-            /*if (pos.X < 0)
+            if (pos.X < 0)
             {
                 pos.X = 0;
             }
-            if (pos.X > 1011)
+            if (pos.X > MainWindow.screenSize.Width /* (1/scaleX)*/ - imageSize.X)
             {
-                pos.X = 1011;
+                pos.X = Convert.ToInt32(MainWindow.screenSize.Width /* (1 / scaleX)*/ - imageSize.X);
             }
             if (pos.Y < 0)
             {
                 pos.Y = 0;
             }
-            if (pos.Y > 729)
+            if (pos.Y > MainWindow.screenSize.Height /* (1 / scaleX)*/ - imageSize.Y)
             {
-                pos.Y = 729;
-            }*/
+                pos.Y = Convert.ToInt32(MainWindow.screenSize.Height /* (1 / scaleX)*/ - imageSize.Y);
+            }
             GraphicsEngine.UpdatePos(playerId, pos);
         }
 
@@ -109,14 +114,14 @@ namespace RaceGame
 
         public void SteerLeft()
         {
-            rot -= 10;
+            rot -= 5;
             Decellerate();
             GraphicsEngine.UpdateRot(playerId,rot);
         }
 
         public void SteerRight()
         {
-            rot += 10;
+            rot += 5;
             Decellerate();
             GraphicsEngine.UpdateRot(playerId, rot);
         }

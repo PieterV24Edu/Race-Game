@@ -24,7 +24,7 @@ namespace RaceGame
 
         Graphics graphicsBuffer;
         Graphics drawHandle;
-        Bitmap backBuffer;
+        public Bitmap backBuffer;
         
         static List<Asset> playerAssets = new List<Asset>();
         static List<Asset> propAssets = new List<Asset>();
@@ -82,6 +82,11 @@ namespace RaceGame
                     
                     graphicsBuffer.Transform = rotate;
 
+<<<<<<< HEAD
+=======
+                    //graphicsBuffer.ScaleTransform(playerAssets[i].scaleX, playerAssets[i].scaleY,MatrixOrder.Append);
+
+>>>>>>> origin/Pieter
                     graphicsBuffer.DrawImage(playerAssets[i].imageToDisplay, playerAssets[i].pointOfAsset);
                 }
 
