@@ -42,8 +42,8 @@ namespace RaceGame
         List<Player> players = new List<Player>();
         GraphicsPath path = new GraphicsPath();
 
-        Bitmap car1 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carCyan.png"));
-        Bitmap car2 = new Bitmap(Path.Combine(Environment.CurrentDirectory, "carDarkGreen.png"));
+        Bitmap car1 = new Bitmap(Resources.carCyan);
+        Bitmap car2 = new Bitmap(Resources.carDarkGreen);
 
         public MainWindow()
         {

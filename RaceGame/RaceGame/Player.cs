@@ -176,7 +176,7 @@ namespace RaceGame
             }
             if (fuelRemaining <= 0 && fuelSlow == false)
             {
-                playerCar.maxSpeed = playerCar.maxSpeed / 2;
+                playerCar.maxSpeed /= 2;
                 fuelSlow = true;
             }
         }
