@@ -77,7 +77,6 @@ namespace RaceGame
                     
                     graphicsBuffer.Transform = rotate;
 
-                    //graphicsBuffer.ScaleTransform(playerAssets[i].scaleX, playerAssets[i].scaleY,MatrixOrder.Append);
 
                     graphicsBuffer.DrawImage(playerAssets[i].imageToDisplay, playerAssets[i].pointOfAsset);
                 }

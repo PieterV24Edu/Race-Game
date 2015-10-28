@@ -21,8 +21,7 @@ namespace RaceGame
         Point imageSize;
 
         int playerId;
-        public int maxSpeed =12;
-        public float accStep = 0.5f;
+        public float maxSpeed =3;
         Timer carTimer = new Timer();
 
         public Car(int playerId, Point startPos, int startRot, Bitmap carImage,float xScale=0,float yScale=0)
@@ -114,14 +113,14 @@ namespace RaceGame
 
         public void SteerLeft()
         {
-            rot -= 10;
+            rot -= 15;
             Decellerate();
             GraphicsEngine.UpdateRot(playerId,rot);
         }
 
         public void SteerRight()
         {
-            rot += 10;
+            rot += 15;
             Decellerate();
             GraphicsEngine.UpdateRot(playerId, rot);
         }
@@ -140,7 +139,5 @@ namespace RaceGame
 
             return new Point(px,py);
         }
-
-
     }
 }

@@ -41,8 +41,8 @@ namespace RaceGame
 
         List<Player> players = new List<Player>();
 
-        Bitmap car1 = new Bitmap(Resources.carCyan);
-        Bitmap car2 = new Bitmap(Resources.carDarkGreen);
+        Bitmap car1 = new Bitmap(Resources.carCyan2);
+        Bitmap car2 = new Bitmap(Resources.carDarkGreen2);
 
         public MainWindow()
         {
@@ -70,8 +70,8 @@ namespace RaceGame
 
             //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
 
-            players.Add(new Player("1", new Point(0, 0), 0, car1, new List<Keys>() { Keys.W, Keys.S, Keys.A, Keys.D }, gEngine));
-            players.Add(new Player("2", new Point(0, 50), 0, car2, new List<Keys>() { Keys.Up, Keys.Down, Keys.Left, Keys.Right }, gEngine));
+            players.Add(new Player("1", new Point(487, 88), 0, car1, new List<Keys>() { Keys.W, Keys.S, Keys.A, Keys.D }, gEngine));
+            players.Add(new Player("2", new Point(487, 121), 0, car2, new List<Keys>() { Keys.Up, Keys.Down, Keys.Left, Keys.Right }, gEngine));
         }
 
         private void GameUpdate(object sender, EventArgs e)
@@ -100,8 +100,8 @@ namespace RaceGame
                     count--;
                 }
             }
-            Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0] + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "\r\nPits: " + (int)Player1Info[3];
-            Meter2.Text = "Player 2\r\n" + (int)Player2Info[0] + " :Speed\r\n" + (int)Player2Info[1] + " :Fuel\r\n" + (int)Player2Info[2] + " :Laps\r\n" + (int)Player2Info[3] + " :Pits";
+            Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0] * 25 + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "\r\nPits: " + (int)Player1Info[3];
+            Meter2.Text = "Player 2\r\n" + (int)Player2Info[0] * 25 + " :Speed\r\n" + (int)Player2Info[1] + " :Fuel\r\n" + (int)Player2Info[2] + " :Laps\r\n" + (int)Player2Info[3] + " :Pits";
         }
         private void SetKeysUp(object sender, KeyEventArgs e)
         {
