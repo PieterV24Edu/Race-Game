@@ -66,17 +66,17 @@ namespace RaceGame
             {
                 pos.X = 0;
             }
-            if (pos.X > MainWindow.screenSize.Width * (1/scaleX) - imageSize.X)
+            if (pos.X > MainWindow.screenSize.Width /* (1/scaleX)*/ - imageSize.X)
             {
-                pos.X = Convert.ToInt32(MainWindow.screenSize.Width * (1 / scaleX) - imageSize.X);
+                pos.X = Convert.ToInt32(MainWindow.screenSize.Width /* (1 / scaleX)*/ - imageSize.X);
             }
             if (pos.Y < 0)
             {
                 pos.Y = 0;
             }
-            if (pos.Y > MainWindow.screenSize.Height * (1 / scaleX) - imageSize.Y)
+            if (pos.Y > MainWindow.screenSize.Height /* (1 / scaleX)*/ - imageSize.Y)
             {
-                pos.Y = Convert.ToInt32(MainWindow.screenSize.Height * (1 / scaleX)) - imageSize.Y;
+                pos.Y = Convert.ToInt32(MainWindow.screenSize.Height /* (1 / scaleX)*/ - imageSize.Y);
             }
             GraphicsEngine.UpdatePos(playerId, pos);
         }

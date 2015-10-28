@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Windows.Forms;
+using RaceGame.Properties;
 
 namespace RaceGame
 {
@@ -20,19 +21,22 @@ namespace RaceGame
         int fuelCalcCounter = 0;
         float[] fuelCalcVal = new float[10];
         bool fuelSlow = false;
+        bool grassSlow = false;
+        GraphicsEngine Engine;
+        Color pixelColor;
         
         Car playerCar;
         List<Keys> playerKeys;
 
-        public Player(string name, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse)
+        public Player(string name, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse, GraphicsEngine gEngine)
         {
             this.name = name;
             this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,0.25f,0.25f);
             this.playerKeys = playerKeysToUse;
-            
+
             //register with graphicsEngine
             GraphicsEngine.AddAsset(new Asset(++GraphicsEngine.assetsToRender,playerCar.image,playerCar.pos,playerCar.rot,playerCar.scaleX,playerCar.scaleY),RenderType.Player);
-        
+            Engine = gEngine;
             Timer playerTimer = new Timer();
             playerTimer.Interval = 1;
             playerTimer.Tick += Timer_Tick;
@@ -178,6 +182,24 @@ namespace RaceGame
             {
                 playerCar.maxSpeed /= 2;
                 fuelSlow = true;
+            }
+            else if (fuelRemaining > 0 && fuelSlow)
+            {
+                playerCar.maxSpeed *= 2;
+                fuelSlow = false;
+            }
+            Bitmap BackgroundImage = new Bitmap(Resources.Background);
+            pixelColor = BackgroundImage.GetPixel(GetCarPos().X /* GetScale().Width*/, GetCarPos().Y /* GetScale().Height*/);
+            Debug.Print(playerCar.maxSpeed + "");
+            if (pixelColor == Color.FromArgb(0,0,0,0) && grassSlow == false)
+            {
+                playerCar.maxSpeed /= 2;
+                grassSlow = true;
+            }
+            else if (pixelColor != Color.FromArgb(0, 0, 0, 0) && grassSlow)
+            {
+                playerCar.maxSpeed *= 2;
+                fuelSlow = false;
             }
         }
     }

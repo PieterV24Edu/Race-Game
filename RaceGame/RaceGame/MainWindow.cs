@@ -40,7 +40,6 @@ namespace RaceGame
         Timer InfoTimer = new Timer();
 
         List<Player> players = new List<Player>();
-        GraphicsPath path = new GraphicsPath();
 
         Bitmap car1 = new Bitmap(Resources.carCyan);
         Bitmap car2 = new Bitmap(Resources.carDarkGreen);
@@ -58,22 +57,22 @@ namespace RaceGame
             GameTimer.Tick += new EventHandler(GameUpdate);
             GameTimer.Start();
 
-            InfoTimer.Interval = 1000;
+            InfoTimer.Interval = 100;
             InfoTimer.Tick += new EventHandler(InfoUpdate);
             InfoTimer.Start();
 
             this.KeyDown += new KeyEventHandler(SetKeysDown);
             this.KeyUp += new KeyEventHandler(SetKeysUp);
-            
-            //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
-
-            players.Add(new Player("1",new Point(0,0),0,car1,new List<Keys>(){Keys.W,Keys.S,Keys.A,Keys.D}));
-            players.Add(new Player("2", new Point(0,50),0,car2,new List<Keys>(){Keys.Up,Keys.Down,Keys.Left,Keys.Right}));
 
             //inits graphics engine with a graphics handle
             Graphics g = canvas.CreateGraphics();
             gEngine = new GraphicsEngine(g);
-       }
+
+            //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
+
+            players.Add(new Player("1", new Point(0, 0), 0, car1, new List<Keys>() { Keys.W, Keys.S, Keys.A, Keys.D }, gEngine));
+            players.Add(new Player("2", new Point(0, 50), 0, car2, new List<Keys>() { Keys.Up, Keys.Down, Keys.Left, Keys.Right }, gEngine));
+        }
 
         private void GameUpdate(object sender, EventArgs e)
         {
@@ -81,6 +80,7 @@ namespace RaceGame
 
             AddInputs();
             gEngine.GraphicsUpdate(null);
+            
             Invalidate();
         }
 
