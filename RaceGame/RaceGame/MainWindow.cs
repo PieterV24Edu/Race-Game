@@ -124,7 +124,7 @@ namespace RaceGame
                 }
             }
 
-            Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0]*5 + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "\r\nPits: " + (int)Player1Info[3];
+            Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0] + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "\r\nPits: " + (int)Player1Info[3];
             Meter2.Text = "Player 2\r\n" + (int)Player2Info[0] + " :Speed\r\n" + (int)Player2Info[1] + " :Fuel\r\n" + (int)Player2Info[2] + " :Laps\r\n" + (int)Player2Info[3] + " :Pits";
         }
 

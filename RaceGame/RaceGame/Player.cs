@@ -81,7 +81,6 @@ namespace RaceGame
 
         public void Refuel()
         {
-
             if (fuelRemaining<100)
             {
                 playerCar.currentSpeed = 2;
