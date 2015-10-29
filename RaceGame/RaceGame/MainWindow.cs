@@ -243,7 +243,7 @@ namespace RaceGame
 
             Rectangle pitRect = new Rectangle(PointPos.X, PointPos.Y, width, height);
 
-            canvas.CreateGraphics().DrawRectangle(new Pen(Color.Blue), pitRect);
+            //canvas.CreateGraphics().DrawRectangle(new Pen(Color.Blue), pitRect);
             if (pitRect.Contains(rectToCompare))
             {
                 players[playerNr].Checkpoint(checkpoint);
