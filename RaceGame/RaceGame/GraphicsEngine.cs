@@ -82,6 +82,10 @@ namespace RaceGame
                     
                     graphicsBuffer.Transform = rotate;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
                     graphicsBuffer.DrawImage(playerAssets[i].imageToDisplay, playerAssets[i].pointOfAsset);
                 }
 
