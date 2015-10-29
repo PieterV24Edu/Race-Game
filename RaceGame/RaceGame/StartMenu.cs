@@ -18,9 +18,11 @@ namespace RaceGame
             InitializeComponent();
             StartButton.Click += new EventHandler(StartButton_Click);
         }
-
+        //pass names and rounds to the mainwindow
+        //placeholders will be added if no input is given
         private void StartButton_Click(object sender, EventArgs e)
         {
+            int rounds;
             if (Player1Textbox.Text == "")
             {
                 Player1Textbox.Text = "Player 1";
@@ -29,12 +31,13 @@ namespace RaceGame
             {
                 Player2Textbox.Text = "Player 2";
             }
-            if (RoundTextbox.Text == "" || RoundTextbox.Text == "Rounds(default: 3)")
+            if (int.TryParse(RoundTextbox.Text, out rounds) == false)
             {
-                RoundTextbox.Text = "3";
+                rounds = 3;
             }
+            //close this form and open the game itself
             this.Hide();
-            MainWindow MW = new MainWindow(Player1Textbox.Text, Player2Textbox.Text, int.Parse(RoundTextbox.Text));
+            MainWindow MW = new MainWindow(Player1Textbox.Text, Player2Textbox.Text, rounds);
             MW.Closed += (s, args) => this.Close();
             MW.Show();
         }
