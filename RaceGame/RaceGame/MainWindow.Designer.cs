@@ -57,14 +57,8 @@
             // 
             // canvas
             // 
-<<<<<<< HEAD
-            this.canvas.BackColor = System.Drawing.Color.ForestGreen;
             this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-=======
             this.canvas.BackColor = System.Drawing.Color.Green;
-            this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
             this.canvas.Cursor = System.Windows.Forms.Cursors.Default;
             this.canvas.Location = new System.Drawing.Point(-1, -3);
             this.canvas.Name = "canvas";

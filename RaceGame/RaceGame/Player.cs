@@ -39,12 +39,8 @@ namespace RaceGame
 
             //register with graphicsEngine
             GraphicsEngine.AddAsset(new Asset(++GraphicsEngine.assetsToRender,playerCar.image,playerCar.pos,playerCar.rot,playerCar.scaleX,playerCar.scaleY),RenderType.Player);
-<<<<<<< HEAD
-
-=======
-            Engine = gEngine;
+            
             //player control timer
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
             Timer playerTimer = new Timer();
             playerTimer.Interval = 1;
             playerTimer.Tick += Timer_Tick;
@@ -156,23 +152,22 @@ namespace RaceGame
         {
             if (!canMove) {  Refuel();   return; }
 
-                if (F)
-                {
-                    playerCar.Accelerate('F');
-                }
-                if (L)
-                {
-                    if (playerCar.currentSpeed != 0)
-                    {
-                        playerCar.SteerLeft();
-                    }
-                }
-<<<<<<< HEAD
-                if (B)
-                {
-                    playerCar.Accelerate('B');
-=======
+            if (F)
+            {
+                playerCar.Accelerate('F');
             }
+            if (L)
+            {
+                if (playerCar.currentSpeed != 0)
+                {
+                    playerCar.SteerLeft();
+                }
+            }
+            if (B)
+            {
+                playerCar.Accelerate('B');
+            }
+
             if (playerCar.currentSpeed > playerCar.maxSpeed)
             {
                 playerCar.Decellerate();
@@ -185,45 +180,40 @@ namespace RaceGame
             {
                 if (playerCar.currentSpeed < 0)
                 {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed * -1 / playerCar.maxSpeed;
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
+                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed*-1/playerCar.maxSpeed;
                 }
-                if (R)
+                else
                 {
-<<<<<<< HEAD
-                    if (playerCar.currentSpeed != 0)
-                    {
-                        playerCar.SteerRight();
-                    }
-=======
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed / playerCar.maxSpeed;
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
+                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed/playerCar.maxSpeed;
                 }
-                if (!F && !B)
+            }
+            else if (fuelCalcCounter == 10)
+            {
+                float avg = 0;
+                foreach (float val in fuelCalcVal)
                 {
-                    if (playerCar.currentSpeed != 0)
-                    {
-                        playerCar.Decellerate();
-                    }
+                    avg += val;
                 }
-                if (playerCar.currentSpeed > playerCar.maxSpeed)
+                avg /= 10;
+
+                if (fuelRemaining > 0)
                 {
-<<<<<<< HEAD
-                    playerCar.Decellerate();
-                }
-=======
-                    fuelRemaining -= avg * 1.6f;
+                    fuelRemaining -= avg*1.6f;
                 }
                 fuelCalcCounter = 0;
                 if (playerCar.currentSpeed < 0)
                 {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed * -1 / playerCar.maxSpeed;
+                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed*-1/playerCar.maxSpeed;
                 }
                 else
                 {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed / playerCar.maxSpeed;
+                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed/playerCar.maxSpeed;
                 }
             }
+
+
+
+            
             if (fuelRemaining <= 0 && fuelSlow == false)
             {
                 if (grassSlow)
@@ -249,10 +239,12 @@ namespace RaceGame
                 }
                 fuelSlow = false;
             }
-            Debug.Print(GetScale() + "");
+
             Bitmap BackgroundImage = new Bitmap(Resources.Background);
-            pixelColor = BackgroundImage.GetPixel(GetCarPos().X + (playImage.Width / 2), GetCarPos().Y + (playImage.Height / 2));
+            pixelColor = BackgroundImage.GetPixel(GetCarPos().X + (int)(GetImageWidth()/ 2), GetCarPos().Y + (int)(GetImageHeight()/ 2));
+
             Debug.Print(playerCar.maxSpeed + "");
+
             if (pixelColor == Color.FromArgb(0, 0, 0, 0) && grassSlow == false)
             {
                 if (fuelSlow)
@@ -278,7 +270,6 @@ namespace RaceGame
                 }
                 grassSlow = false;
             }
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
         }
     }
 }

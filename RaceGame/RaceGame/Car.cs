@@ -21,12 +21,8 @@ namespace RaceGame
         Point imageSize;
 
         int playerId;
-<<<<<<< HEAD
-        public int maxSpeed =20;
         public float accStep = 0.5f;
-=======
         public float maxSpeed =3;
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
         Timer carTimer = new Timer();
 
         public Car(int playerId, Point startPos, int startRot, Bitmap carImage,float xScale=0,float yScale=0)
@@ -103,22 +99,14 @@ namespace RaceGame
 
         public void SteerLeft()
         {
-<<<<<<< HEAD
-            rot -= 5;
-=======
             rot -= 15;
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
             Decellerate();
             GraphicsEngine.UpdateRot(playerId,rot);
         }
 
         public void SteerRight()
         {
-<<<<<<< HEAD
-            rot += 5;
-=======
             rot += 15;
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
             Decellerate();
             GraphicsEngine.UpdateRot(playerId, rot);
         }

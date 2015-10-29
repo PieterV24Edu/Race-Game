@@ -74,14 +74,8 @@ namespace RaceGame
 
             //GraphicsEngine.AddAsset(new Asset(20,car1, new Point(0, 0), 0), RenderType.Player);
 
-<<<<<<< HEAD
-            players.Add(new Player("1", new Point(0, 0), 0, car1, new List<Keys>() { Keys.W, Keys.S, Keys.A, Keys.D }));
-            players.Add(new Player("2", new Point(0, 50), 0, car2, new List<Keys>() { Keys.Up, Keys.Down, Keys.Left, Keys.Right }));
-
-=======
-            players.Add(new Player("1", new Point(487, 88), 0, car1, new List<Keys>() { Keys.W, Keys.S, Keys.A, Keys.D }, gEngine));
-            players.Add(new Player("2", new Point(487, 121), 0, car2, new List<Keys>() { Keys.Up, Keys.Down, Keys.Left, Keys.Right }, gEngine));
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
+            players.Add(new Player("1", new Point(487, 88), 0, car1, new List<Keys>() { Keys.W, Keys.S, Keys.A, Keys.D }));
+            players.Add(new Player("2", new Point(487, 121), 0, car2, new List<Keys>() { Keys.Up, Keys.Down, Keys.Left, Keys.Right }));
         }
 
         private void GameUpdate(object sender, EventArgs e)
@@ -128,14 +122,10 @@ namespace RaceGame
                     count--;
                 }
             }
-<<<<<<< HEAD
 
             Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0]*5 + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "\r\nPits: " + (int)Player1Info[3];
             Meter2.Text = "Player 2\r\n" + (int)Player2Info[0] + " :Speed\r\n" + (int)Player2Info[1] + " :Fuel\r\n" + (int)Player2Info[2] + " :Laps\r\n" + (int)Player2Info[3] + " :Pits";
-=======
-            Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0] * 25 + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "\r\nPits: " + (int)Player1Info[3];
-            Meter2.Text = "Player 2\r\n" + (int)Player2Info[0] * 25 + " :Speed\r\n" + (int)Player2Info[1] + " :Fuel\r\n" + (int)Player2Info[2] + " :Laps\r\n" + (int)Player2Info[3] + " :Pits";
->>>>>>> 45e81cb7d57e37f9efbb847f5bfee4a186adf2fa
+
         }
 
         private void SetKeysUp(object sender, KeyEventArgs e)
