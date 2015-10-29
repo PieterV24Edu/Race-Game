@@ -10,7 +10,7 @@ namespace RaceGame
         public int rotationOfAsset;
         public float scaleX;
         public float scaleY;
-
+        //safe information about the car(asset)
         public Asset(int id, Bitmap img, Point pos, int rot,float xScale,float yScale)
         {
             assetId = id;

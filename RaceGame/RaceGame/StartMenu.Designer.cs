@@ -28,84 +28,60 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.StartButton = new System.Windows.Forms.Button();
+            this.Player1Textbox = new System.Windows.Forms.TextBox();
+            this.Player2Textbox = new System.Windows.Forms.TextBox();
+            this.RoundTextbox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // button2
+            // StartButton
             // 
-            this.button2.Location = new System.Drawing.Point(409, 480);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(191, 118);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Start";
-            this.button2.UseVisualStyleBackColor = true;
+            this.StartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StartButton.Location = new System.Drawing.Point(417, 480);
+            this.StartButton.Name = "StartButton";
+            this.StartButton.Size = new System.Drawing.Size(190, 118);
+            this.StartButton.TabIndex = 1;
+            this.StartButton.Text = "Start";
+            this.StartButton.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // Player1Textbox
             // 
-            this.textBox1.Location = new System.Drawing.Point(89, 283);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(278, 20);
-            this.textBox1.TabIndex = 2;
+            this.Player1Textbox.Location = new System.Drawing.Point(90, 290);
+            this.Player1Textbox.Name = "Player1Textbox";
+            this.Player1Textbox.Size = new System.Drawing.Size(278, 20);
+            this.Player1Textbox.TabIndex = 2;
+            this.Player1Textbox.Text = "Player 1";
+            this.Player1Textbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox2
+            // Player2Textbox
             // 
-            this.textBox2.Location = new System.Drawing.Point(640, 283);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(278, 20);
-            this.textBox2.TabIndex = 3;
+            this.Player2Textbox.Location = new System.Drawing.Point(656, 290);
+            this.Player2Textbox.Name = "Player2Textbox";
+            this.Player2Textbox.Size = new System.Drawing.Size(278, 20);
+            this.Player2Textbox.TabIndex = 3;
+            this.Player2Textbox.Text = "Player 2";
+            this.Player2Textbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox3
+            // RoundTextbox
             // 
-            this.textBox3.Location = new System.Drawing.Point(441, 283);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(117, 20);
-            this.textBox3.TabIndex = 4;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(191, 249);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(76, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Player 1 Name";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(751, 249);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Player 2 Name";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(478, 249);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Rounds";
+            this.RoundTextbox.Location = new System.Drawing.Point(453, 290);
+            this.RoundTextbox.Name = "RoundTextbox";
+            this.RoundTextbox.Size = new System.Drawing.Size(118, 20);
+            this.RoundTextbox.TabIndex = 4;
+            this.RoundTextbox.Text = "Rounds(default: 3)";
+            this.RoundTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // StartMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::RaceGame.Properties.Resources.MenuBackground;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1008, 729);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.RoundTextbox);
+            this.Controls.Add(this.Player2Textbox);
+            this.Controls.Add(this.Player1Textbox);
+            this.Controls.Add(this.StartButton);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1024, 768);
             this.MinimizeBox = false;
@@ -119,12 +95,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button StartButton;
+        private System.Windows.Forms.TextBox Player1Textbox;
+        private System.Windows.Forms.TextBox Player2Textbox;
+        private System.Windows.Forms.TextBox RoundTextbox;
     }
 }

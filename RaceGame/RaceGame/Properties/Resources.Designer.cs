@@ -83,16 +83,6 @@ namespace RaceGame.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap carCyan2 {
-            get {
-                object obj = ResourceManager.GetObject("carCyan2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         public static System.Drawing.Bitmap carDarkGreen {
             get {
                 object obj = ResourceManager.GetObject("carDarkGreen", resourceCulture);
@@ -103,9 +93,9 @@ namespace RaceGame.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap carDarkGreen2 {
+        public static System.Drawing.Bitmap MenuBackground {
             get {
-                object obj = ResourceManager.GetObject("carDarkGreen2", resourceCulture);
+                object obj = ResourceManager.GetObject("MenuBackground", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

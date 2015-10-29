@@ -22,8 +22,10 @@ namespace RaceGame
         public int time = 0;
         double[] Player1Info = new double[4];
         double[] Player2Info = new double[4];
-        string player1Name = "Player 1";
-        string player2Name = "Player 2";
+        public string player1Name;
+        public string player2Name;
+        public static int requiredRounds;
+
         public List<Keys> currentInput
         {
             get { return _currentInput; }
@@ -50,9 +52,13 @@ namespace RaceGame
 
         int counter = 0;
 
-        public MainWindow()
+        public MainWindow(string p1Name, string p2Name, int reqRounds)
         {
             InitializeComponent();
+
+            player1Name = p1Name;
+            player2Name = p2Name;
+            requiredRounds = reqRounds;
 
             this.SetStyle(
                 ControlStyles.UserPaint |
@@ -148,8 +154,8 @@ namespace RaceGame
                 }
             }
 
-            Meter1.Text = "Player 1\r\nSpeed: " + (int)Player1Info[0]*12 + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "/" + (int)Player1Info[4] + "\r\nPits: " + (int)Player1Info[3];
-            Meter2.Text = "Player 2\r\n" + (int)Player2Info[0]*12 + " :Speed\r\n" + (int)Player2Info[1] + " :Fuel\r\n" + (int)Player2Info[2] + "/" + (int)Player1Info[4] + " :Laps\r\n" + (int)Player2Info[3] + " :Pits";
+            Meter1.Text = player1Name + ":\r\nSpeed: " + (int)Player1Info[0]*12 + "\r\nFuel: " + (int)Player1Info[1] + "\r\nLaps: " + (int)Player1Info[2] + "/" + (int)Player1Info[4] + "\r\nPits: " + (int)Player1Info[3];
+            Meter2.Text = ":" + player2Name + "\r\n" + (int)Player2Info[0]*12 + " :Speed\r\n" + (int)Player2Info[1] + " :Fuel\r\n" + (int)Player2Info[2] + "/" + (int)Player1Info[4] + " :Laps\r\n" + (int)Player2Info[3] + " :Pits";
         }
 
         private void SetKeysUp(object sender, KeyEventArgs e)

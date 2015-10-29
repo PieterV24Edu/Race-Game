@@ -17,7 +17,6 @@ namespace RaceGame
         string name;
         
         int roundsElapsed = 0;
-        int requiredRounds = 1;
         float fuelRemaining = 100;
         int pitStops = 0;
         bool F, B, L, R;
@@ -26,7 +25,7 @@ namespace RaceGame
         bool fuelSlow = false;
         bool canMove = true;
         bool grassSlow = false;
-        bool winStop = true;
+        bool fueling = true;
         int[] Checkpoints = new int[5] {0,0,0,0,0};
 
         Color pixelColor;
@@ -60,7 +59,7 @@ namespace RaceGame
 
         public double[] GetInfo()
         {
-            return new double[5] {playerCar.currentSpeed, fuelRemaining, roundsElapsed, pitStops, requiredRounds};
+            return new double[5] {playerCar.currentSpeed, fuelRemaining, roundsElapsed, pitStops, MainWindow.requiredRounds};
         }
 
         public Point GetCarPos()
@@ -111,7 +110,6 @@ namespace RaceGame
 
         public void Checkpoint(int checkpoint)
         {
-            Debug.Print(checkpoint + "");
             Checkpoints[checkpoint] = 1;
         }
 
@@ -133,12 +131,12 @@ namespace RaceGame
                 }
                 roundsElapsed++;
             }
-            if (roundsElapsed == requiredRounds && winStop)
+            if (roundsElapsed == MainWindow.requiredRounds)
             {
-                playerCar.maxSpeed = 0;
-                playerCar.currentSpeed = 0;
-                winStop = false;
-                MessageBox.Show(playerName + " Has won the race");
+                MainWindow.ActiveForm.Hide();
+                FinishWindow Finish = new FinishWindow(playerName);
+                Finish.Closed += (s, args) => MainWindow.ActiveForm.Close();
+                Finish.Show();
             }
         }
 

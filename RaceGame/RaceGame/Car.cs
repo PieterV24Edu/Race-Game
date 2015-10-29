@@ -13,7 +13,7 @@ namespace RaceGame
 {
     class Car
     {
-        public Bitmap image = new Bitmap(Resources.carCyan);
+        public Bitmap image;
         public Point pos;
         public float currentSpeed = 0;
         public int rot;
@@ -21,7 +21,9 @@ namespace RaceGame
         Point imageSize;
 
         int playerId;
+        //maximum speed the car can travel at
         public float maxSpeed =10;
+        //increments for accelleration and decelleration of the car
         public float accStep = 1f;
         Timer carTimer = new Timer();
 
@@ -62,6 +64,7 @@ namespace RaceGame
         private void MoveCar(object sender, ElapsedEventArgs e)
         {
             pos = CalcMovePoint(currentSpeed, rot);
+            //check if car is not going outside of the window
             if (pos.X < 0)
             {
                 pos.X = 0;
@@ -79,9 +82,10 @@ namespace RaceGame
             {
                 pos.Y = (int)(MainWindow.screenSize.Height * (1 / scaleY) - imageSize.Y);
             }
+            //update position of the car using the graphicsengine class
             GraphicsEngine.UpdatePos(playerId, pos);
         }
-
+        //acceleration method with switch to identify forward and backward acceleration
         public void Accelerate(char dir)
         {
             switch (dir)
@@ -100,7 +104,7 @@ namespace RaceGame
                     break;
             }
         }
-
+        //decelleration method with check if decelleration should be aplied on forward or backward momentum
         public void Decellerate()
         {
             if (currentSpeed > 0)
@@ -112,7 +116,7 @@ namespace RaceGame
                 currentSpeed += accStep;
             }
         }
-
+        //steering method
         public void SteerLeft()
         {
             rot -= 15;
@@ -126,12 +130,12 @@ namespace RaceGame
             Decellerate();
             GraphicsEngine.UpdateRot(playerId, rot);
         }
-
+        //method to convert angle in deg to angel in rad
         double DegtoRad(double deg)
         {
             return (Math.PI/180)*deg;
         }
-
+        //move logic. formula that calculates the movement on the x and y axis depending on the speed and angle of the car
         Point CalcMovePoint(double speed, double angle)
         {
             int py = Convert.ToInt32(speed * (Math.Sin(DegtoRad(angle))));
