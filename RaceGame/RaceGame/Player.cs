@@ -15,7 +15,7 @@ namespace RaceGame
         string name;
         
         int roundsElapsed = 0;
-        float fuelRemaining = 90;
+        float fuelRemaining = 100;
         int pitStops = 0;
         bool F, B, L, R;
         int fuelCalcCounter = 0;
@@ -28,18 +28,17 @@ namespace RaceGame
 
         Car playerCar;
         List<Keys> playerKeys;
-        private Image playImage;
+        private GraphicsEngine Engine;
 
-        public Player(string name, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse)
+        public Player(string name, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse, GraphicsEngine gEngine)
         {
             this.name = name;
-            this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,1f,1f);
+            this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,0.25f,0.25f);
             this.playerKeys = playerKeysToUse;
-            this.playImage = playerImage;
-
+            Engine = gEngine;
             //register with graphicsEngine
             GraphicsEngine.AddAsset(new Asset(++GraphicsEngine.assetsToRender,playerCar.image,playerCar.pos,playerCar.rot,playerCar.scaleX,playerCar.scaleY),RenderType.Player);
-            
+
             //player control timer
             Timer playerTimer = new Timer();
             playerTimer.Interval = 1;
@@ -48,7 +47,7 @@ namespace RaceGame
 
             //player event timer
             Timer EventTimer = new Timer();
-            EventTimer.Interval = 100;
+            EventTimer.Interval = 10;
             EventTimer.Tick += Event_Tick;
             EventTimer.Start();
 
@@ -90,7 +89,6 @@ namespace RaceGame
 
         public void Refuel()
         {
-
             if (fuelRemaining<100)
             {
                 playerCar.currentSpeed = 2;
@@ -153,51 +151,53 @@ namespace RaceGame
         {
             if (!canMove) {  Refuel();   return; }
 
-            if (F)
-            {
-                playerCar.Accelerate('F');
-            }
-            if (L)
-            {
-                if (playerCar.currentSpeed != 0)
+                if (F)
                 {
-                    playerCar.SteerLeft();
+                    playerCar.Accelerate('F');
                 }
-            }
-            if (B)
-            {
-                playerCar.Accelerate('B');
-            }
-            if (R)
-            {
-                if (playerCar.currentSpeed != 0)
+                if (L)
                 {
-                    playerCar.SteerRight();
+                    if (playerCar.currentSpeed != 0)
+                    {
+                        playerCar.SteerLeft();
+                    }
                 }
-            }
-
-            if (!F && !B && playerCar.currentSpeed>0)
-            {
-                playerCar.Decellerate();
-            }
-            if (playerCar.currentSpeed > playerCar.maxSpeed)
-            {
-                playerCar.Decellerate();
-            } 
+                if (B)
+                {
+                    playerCar.Accelerate('B');
+                }
+                if (R)
+                {
+                    if (playerCar.currentSpeed != 0)
+                    {
+                        playerCar.SteerRight();
+                    }
+                }
+                if (!F && !B)
+                {
+                    if (playerCar.currentSpeed != 0)
+                    {
+                        playerCar.Decellerate();
+                    }
+                }
+                if (playerCar.currentSpeed > playerCar.maxSpeed)
+                {
+                    playerCar.Decellerate();
+                }
         }
-
         private void Event_Tick(object sender, EventArgs e)
         {
             if (fuelCalcCounter < 10)
             {
                 if (playerCar.currentSpeed < 0)
                 {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed*-1/playerCar.maxSpeed;
+                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed * -1 / playerCar.maxSpeed;
                 }
                 else
                 {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed/playerCar.maxSpeed;
+                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed / playerCar.maxSpeed;
                 }
+                fuelCalcCounter++;
             }
             else if (fuelCalcCounter == 10)
             {
@@ -210,31 +210,27 @@ namespace RaceGame
 
                 if (fuelRemaining > 0)
                 {
-                    fuelRemaining -= avg*1.6f;
+                    fuelRemaining -= avg * 0.4f;
                 }
                 fuelCalcCounter = 0;
                 if (playerCar.currentSpeed < 0)
                 {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed*-1/playerCar.maxSpeed;
+                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed * -1 / playerCar.maxSpeed;
                 }
                 else
                 {
-                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed/playerCar.maxSpeed;
+                    fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed / playerCar.maxSpeed;
                 }
             }
-
-
-
-            
             if (fuelRemaining <= 0 && fuelSlow == false)
             {
                 if (grassSlow)
                 {
-                    playerCar.maxSpeed = 1f;
+                    playerCar.maxSpeed = 2.5f;
                 }
                 else
                 {
-                    playerCar.maxSpeed = 1.5f;
+                    playerCar.maxSpeed = 5f;
                 }
                 fuelSlow = true;
             }
@@ -243,45 +239,46 @@ namespace RaceGame
                 switch (grassSlow)
                 {
                     case true:
-                        playerCar.maxSpeed = 1.5f;
+                        playerCar.maxSpeed = 5f;
                         break;
                     case false:
-                        playerCar.maxSpeed = 3;
+                        playerCar.maxSpeed = 10;
                         break;
                 }
                 fuelSlow = false;
             }
-
-            Bitmap BackgroundImage = new Bitmap(Resources.Background);
-            pixelColor = BackgroundImage.GetPixel(GetCarPos().X + (int)(GetImageWidth()/ 2), GetCarPos().Y + (int)(GetImageHeight()/ 2));
-
-            Debug.Print(playerCar.maxSpeed + "");
-
-            if (pixelColor == Color.FromArgb(0, 0, 0, 0) && grassSlow == false)
+            if (Engine.backBuffer != null)
             {
-                if (fuelSlow)
+                Bitmap BackgroundImage = new Bitmap(Resources.Background,MainWindow.screenSize.Width,MainWindow.screenSize.Height);
+                pixelColor = BackgroundImage.GetPixel((int)(GetCarPos().X * GetScaleX() + (GetImageWidth() / 2) * GetScaleX()),
+                    (int)(GetCarPos().Y * GetScaleY() + (GetImageHeight() / 2) * GetScaleY()));
+                if (pixelColor == Color.FromArgb(0, 0, 0, 0) && grassSlow == false)
                 {
-                    playerCar.maxSpeed = 1f;
+                    if (fuelSlow)
+                    {
+                        playerCar.maxSpeed = 2.5f;
+                    }
+                    else
+                    {
+                        playerCar.maxSpeed = 5f;
+                    }
+                    grassSlow = true;
                 }
-                else
+                else if (pixelColor != Color.FromArgb(0, 0, 0, 0) && grassSlow)
                 {
-                    playerCar.maxSpeed = 1.5f;
+                    switch (fuelSlow)
+                    {
+                        case true:
+                            playerCar.maxSpeed = 5f;
+                            break;
+                        case false:
+                            playerCar.maxSpeed = 10;
+                            break;
+                    }
+                    grassSlow = false;
                 }
-                grassSlow = true;
             }
-            else if (pixelColor != Color.FromArgb(0, 0, 0, 0) && grassSlow)
-            {
-                switch (fuelSlow)
-                {
-                    case true:
-                        playerCar.maxSpeed = 1.5f;
-                        break;
-                    case false:
-                        playerCar.maxSpeed = 3;
-                        break;
-                }
-                grassSlow = false;
-            }
+           
         }
     }
 }

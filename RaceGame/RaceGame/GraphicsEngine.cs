@@ -23,7 +23,7 @@ namespace RaceGame
         public int startTime;
 
         Graphics graphicsBuffer;
-        Graphics drawHandle;
+        public Graphics drawHandle;
         public Bitmap backBuffer;
         
         static List<Asset> playerAssets = new List<Asset>();

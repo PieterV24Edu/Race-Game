@@ -21,8 +21,8 @@ namespace RaceGame
         Point imageSize;
 
         int playerId;
-        public float accStep = 0.5f;
-        public float maxSpeed =3;
+        public float maxSpeed =10;
+        public float accStep = 1f;
         Timer carTimer = new Timer();
 
         public Car(int playerId, Point startPos, int startRot, Bitmap carImage,float xScale=0,float yScale=0)
@@ -62,14 +62,13 @@ namespace RaceGame
         private void MoveCar(object sender, ElapsedEventArgs e)
         {
             pos = CalcMovePoint(currentSpeed, rot);
-
             if (pos.X < 0)
             {
                 pos.X = 0;
             }
-            if (pos.X > MainWindow.screenSize.Width*(1/scaleX) - imageSize.X)
+            if (pos.X > MainWindow.screenSize.Width * (1 / scaleX) - imageSize.X)
             {
-                pos.X = (int)(MainWindow.screenSize.Width*(1/scaleX) - imageSize.X);
+                pos.X = (int)(MainWindow.screenSize.Width * (1 / scaleX) - imageSize.X);
             }
 
             if (pos.Y < 0)
@@ -80,7 +79,6 @@ namespace RaceGame
             {
                 pos.Y = (int)(MainWindow.screenSize.Height * (1 / scaleY) - imageSize.Y);
             }
-
             GraphicsEngine.UpdatePos(playerId, pos);
         }
 
