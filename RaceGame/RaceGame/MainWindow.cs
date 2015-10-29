@@ -119,11 +119,11 @@ namespace RaceGame
                     new Rectangle(new Point((int)newX, (int)newY),
                         new Size((int)p.GetImageWidth() * (int)p.GetScaleX(),
                             (int)p.GetImageHeight() * (int)p.GetScaleY())), counter, 2);
-                Checkpoint(new Point(415, 246), new Size(188, 33),
+                Checkpoint(new Point(400, 246), new Size(215, 33),
                     new Rectangle(new Point((int)newX, (int)newY),
                         new Size((int)p.GetImageWidth() * (int)p.GetScaleX(),
                             (int)p.GetImageHeight() * (int)p.GetScaleY())), counter, 3);
-                Checkpoint(new Point(41, 180), new Size(156, 33),
+                Checkpoint(new Point(41, 180), new Size(170, 33),
                     new Rectangle(new Point((int)newX, (int)newY),
                         new Size((int)p.GetImageWidth() * (int)p.GetScaleX(),
                             (int)p.GetImageHeight() * (int)p.GetScaleY())), counter, 4);
