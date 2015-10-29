@@ -63,6 +63,24 @@ namespace RaceGame
         {
             pos = CalcMovePoint(currentSpeed, rot);
 
+            if (pos.X < 0)
+            {
+                pos.X = 0;
+            }
+            if (pos.X > MainWindow.screenSize.Width*(1/scaleX) - imageSize.X)
+            {
+                pos.X = (int)(MainWindow.screenSize.Width*(1/scaleX) - imageSize.X);
+            }
+
+            if (pos.Y < 0)
+            {
+                pos.Y = 0;
+            }
+            if (pos.Y > MainWindow.screenSize.Height * (1 / scaleY) - imageSize.Y)
+            {
+                pos.Y = (int)(MainWindow.screenSize.Height * (1 / scaleY) - imageSize.Y);
+            }
+
             GraphicsEngine.UpdatePos(playerId, pos);
         }
 

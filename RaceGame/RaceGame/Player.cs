@@ -45,9 +45,10 @@ namespace RaceGame
             playerTimer.Interval = 1;
             playerTimer.Tick += Timer_Tick;
             playerTimer.Start();
+
             //player event timer
             Timer EventTimer = new Timer();
-            EventTimer.Interval = 10;
+            EventTimer.Interval = 100;
             EventTimer.Tick += Event_Tick;
             EventTimer.Start();
 
@@ -167,7 +168,18 @@ namespace RaceGame
             {
                 playerCar.Accelerate('B');
             }
+            if (R)
+            {
+                if (playerCar.currentSpeed != 0)
+                {
+                    playerCar.SteerRight();
+                }
+            }
 
+            if (!F && !B && playerCar.currentSpeed>0)
+            {
+                playerCar.Decellerate();
+            }
             if (playerCar.currentSpeed > playerCar.maxSpeed)
             {
                 playerCar.Decellerate();
