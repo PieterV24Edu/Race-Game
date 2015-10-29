@@ -38,6 +38,7 @@ namespace RaceGame
         {
             this.name = name;
             this.playerName = playerName;
+            //assign a car to each player
             this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,0.25f,0.25f);
             this.playerKeys = playerKeysToUse;
             //register with graphicsEngine
@@ -56,22 +57,22 @@ namespace RaceGame
             EventTimer.Start();
 
         }
-
+        //method for passign info to the realtime displays
         public double[] GetInfo()
         {
             return new double[5] {playerCar.currentSpeed, fuelRemaining, roundsElapsed, refueled, MainWindow.requiredRounds};
         }
-
+        //method for geting the position of the car
         public Point GetCarPos()
         {
             return playerCar.pos;
         }
-
+        //method for getting the rotation of the car
         public float GetCarRot()
         {
             return playerCar.rot;
         }
-
+        //methods for getting scale and size of the car
         public float GetScaleX()
         {
             return playerCar.scaleX;
@@ -90,7 +91,7 @@ namespace RaceGame
         {
             return playerCar.image.Height;
         }
-
+        //refueling function
         public void Refuel()
         {
             if (fuelRemaining<100)
@@ -107,14 +108,15 @@ namespace RaceGame
                 canMove = true;
                 refueled++;
             }
-
         }
-
+        //checkpoint registry
         public void Checkpoint(int checkpoint)
         {
             Checkpoints[checkpoint] = 1;
         }
-
+        //method with actions that are to be performed on crossing the finish line
+        //first it is checked if you have passed all the waypoints, if so a round is added
+        //when the amount of rounds is equal to the amount of required rounds the final window is displayed with the name of the winner 
         public void Finish()
         {
             int check = 0;
@@ -136,7 +138,7 @@ namespace RaceGame
 
                 roundsElapsed++;
             }
-
+            //open winner window
             if (roundsElapsed == MainWindow.requiredRounds)
             {
                 MainWindow.ActiveForm.Hide();
@@ -146,7 +148,7 @@ namespace RaceGame
             }
 
         }
-
+        //registering keyinputs
         public void CompareInput(Keys keyToCompare)
         {
             if (!playerKeys.Contains(keyToCompare))
@@ -170,7 +172,7 @@ namespace RaceGame
                 R = true;
             }
         }
-
+        //registering keyreleases
         public void KeyLetGo(Keys keytoRemove)
         {
             if (playerKeys[0] == keytoRemove)
@@ -190,7 +192,7 @@ namespace RaceGame
                 R = false;
             }
         }
-
+        //tick for moving the car
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (!canMove) {  Refuel();   return; }
@@ -229,6 +231,7 @@ namespace RaceGame
                     playerCar.Decellerate();
                 }
         }
+        //tick for fuel and grass detection
         private void Event_Tick(object sender, EventArgs e)
         {
 
@@ -300,7 +303,7 @@ namespace RaceGame
                 }
                 fuelSlow = false;
             }
-
+            //detection of the color of the pixels under the car
             Bitmap BackgroundImage = new Bitmap(Resources.Background, MainWindow.screenSize.Width, MainWindow.screenSize.Height);
 
             pixelColor = BackgroundImage.GetPixel((int)(GetCarPos().X * GetScaleX() + (GetImageWidth() / 2) * GetScaleX()),

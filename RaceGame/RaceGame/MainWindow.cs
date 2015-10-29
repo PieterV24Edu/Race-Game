@@ -119,7 +119,7 @@ namespace RaceGame
                     new Rectangle(new Point((int)newX, (int)newY),
                         new Size((int)p.GetImageWidth() * (int)p.GetScaleX(),
                             (int)p.GetImageHeight() * (int)p.GetScaleY())), counter, 2);
-                Checkpoint(new Point(426, 246), new Size(189, 33),
+                Checkpoint(new Point(415, 246), new Size(188, 33),
                     new Rectangle(new Point((int)newX, (int)newY),
                         new Size((int)p.GetImageWidth() * (int)p.GetScaleX(),
                             (int)p.GetImageHeight() * (int)p.GetScaleY())), counter, 3);
@@ -243,7 +243,7 @@ namespace RaceGame
 
             Rectangle pitRect = new Rectangle(PointPos.X, PointPos.Y, width, height);
 
-            //canvas.CreateGraphics().DrawRectangle(new Pen(Color.Blue), pitRect);
+            canvas.CreateGraphics().DrawRectangle(new Pen(Color.Blue), pitRect);
             if (pitRect.Contains(rectToCompare))
             {
                 players[playerNr].Checkpoint(checkpoint);
