@@ -2,6 +2,9 @@
 
 namespace RaceGame
 {
+    /// <summary>
+    /// Used for storing information on an asset to render with GraphicsEngine
+    /// </summary>
     public class Asset
     {
         public int assetId;
@@ -10,6 +13,7 @@ namespace RaceGame
         public int rotationOfAsset;
         public float scaleX;
         public float scaleY;
+
         //safe information about the car(asset)
         public Asset(int id, Bitmap img, Point pos, int rot,float xScale,float yScale)
         {

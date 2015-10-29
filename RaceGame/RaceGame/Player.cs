@@ -20,12 +20,12 @@ namespace RaceGame
         float fuelRemaining = 100;
         int pitStops = 0;
         bool F, B, L, R;
+        public int refueled = 0;
         int fuelCalcCounter = 0;
         float[] fuelCalcVal = new float[10];
         bool fuelSlow = false;
         bool canMove = true;
         bool grassSlow = false;
-        bool fueling = true;
         int[] Checkpoints = new int[5] {0,0,0,0,0};
 
         Color pixelColor;
@@ -59,7 +59,7 @@ namespace RaceGame
 
         public double[] GetInfo()
         {
-            return new double[5] {playerCar.currentSpeed, fuelRemaining, roundsElapsed, pitStops, MainWindow.requiredRounds};
+            return new double[5] {playerCar.currentSpeed, fuelRemaining, roundsElapsed, refueled, MainWindow.requiredRounds};
         }
 
         public Point GetCarPos()
@@ -99,11 +99,13 @@ namespace RaceGame
                 playerCar.Decellerate();
                 playerCar.Decellerate();
                 fuelRemaining++;
+
                 canMove = false;
             }
-            if (fuelRemaining >= 100)
+            if (fuelRemaining >= 100 && !canMove)
             {
                 canMove = true;
+                refueled++;
             }
 
         }
@@ -116,6 +118,7 @@ namespace RaceGame
         public void Finish()
         {
             int check = 0;
+
             foreach (int i in Checkpoints)
             {
                 if (i == 1)
@@ -123,14 +126,17 @@ namespace RaceGame
                     check++;
                 }
             }
+
             if (check == 5)
             {
                 for (int i = 0; i < 5; i++)
                 {
                     Checkpoints[i] = 0;
                 }
+
                 roundsElapsed++;
             }
+
             if (roundsElapsed == MainWindow.requiredRounds)
             {
                 MainWindow.ActiveForm.Hide();
@@ -138,6 +144,7 @@ namespace RaceGame
                 Finish.Closed += (s, args) => MainWindow.ActiveForm.Close();
                 Finish.Show();
             }
+
         }
 
         public void CompareInput(Keys keyToCompare)
@@ -224,6 +231,7 @@ namespace RaceGame
         }
         private void Event_Tick(object sender, EventArgs e)
         {
+
             if (fuelCalcCounter < 10)
             {
                 if (playerCar.currentSpeed < 0)
@@ -239,6 +247,7 @@ namespace RaceGame
             else if (fuelCalcCounter == 10)
             {
                 float avg = 0;
+
                 foreach (float val in fuelCalcVal)
                 {
                     avg += val;
@@ -249,7 +258,13 @@ namespace RaceGame
                 {
                     fuelRemaining -= avg * 2.5f;
                 }
+                if (fuelRemaining <0)
+                {
+                    fuelRemaining = 0; 
+                }
+
                 fuelCalcCounter = 0;
+
                 if (playerCar.currentSpeed < 0)
                 {
                     fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed * -1 / playerCar.maxSpeed;
@@ -259,6 +274,7 @@ namespace RaceGame
                     fuelCalcVal[fuelCalcCounter] = playerCar.currentSpeed / playerCar.maxSpeed;
                 }
             }
+
             if (fuelRemaining <= 0 && fuelSlow == false)
             {
                 if (grassSlow)
@@ -284,9 +300,12 @@ namespace RaceGame
                 }
                 fuelSlow = false;
             }
+
             Bitmap BackgroundImage = new Bitmap(Resources.Background, MainWindow.screenSize.Width, MainWindow.screenSize.Height);
+
             pixelColor = BackgroundImage.GetPixel((int)(GetCarPos().X * GetScaleX() + (GetImageWidth() / 2) * GetScaleX()),
                 (int)(GetCarPos().Y * GetScaleY() + (GetImageHeight() / 2) * GetScaleY()));
+
             if (pixelColor == Color.FromArgb(0, 0, 0, 0) && grassSlow == false)
             {
                 if (fuelSlow)
@@ -313,5 +332,6 @@ namespace RaceGame
                 grassSlow = false;
             }
         }
+
     }
 }
