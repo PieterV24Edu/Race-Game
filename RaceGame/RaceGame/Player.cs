@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Windows.Forms;
@@ -15,6 +17,7 @@ namespace RaceGame
         string name;
         
         int roundsElapsed = 0;
+        int requiredRounds = 1;
         float fuelRemaining = 100;
         int pitStops = 0;
         bool F, B, L, R;
@@ -23,19 +26,21 @@ namespace RaceGame
         bool fuelSlow = false;
         bool canMove = true;
         bool grassSlow = false;
+        bool winStop = true;
+        int[] Checkpoints = new int[5] {0,0,0,0,0};
 
         Color pixelColor;
 
         Car playerCar;
+        string playerName;
         List<Keys> playerKeys;
-        private GraphicsEngine Engine;
 
-        public Player(string name, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse, GraphicsEngine gEngine)
+        public Player(string name,string playerName, Point startPos, int startRot, Bitmap playerImage, List<Keys> playerKeysToUse)
         {
             this.name = name;
+            this.playerName = playerName;
             this.playerCar = new Car(int.Parse(name),startPos,startRot,playerImage,0.25f,0.25f);
             this.playerKeys = playerKeysToUse;
-            Engine = gEngine;
             //register with graphicsEngine
             GraphicsEngine.AddAsset(new Asset(++GraphicsEngine.assetsToRender,playerCar.image,playerCar.pos,playerCar.rot,playerCar.scaleX,playerCar.scaleY),RenderType.Player);
 
@@ -55,7 +60,7 @@ namespace RaceGame
 
         public double[] GetInfo()
         {
-            return new double[4] {playerCar.currentSpeed, fuelRemaining, roundsElapsed, pitStops};
+            return new double[5] {playerCar.currentSpeed, fuelRemaining, roundsElapsed, pitStops, requiredRounds};
         }
 
         public Point GetCarPos()
@@ -92,7 +97,8 @@ namespace RaceGame
             if (fuelRemaining<100)
             {
                 playerCar.currentSpeed = 2;
-
+                playerCar.Decellerate();
+                playerCar.Decellerate();
                 fuelRemaining++;
                 canMove = false;
             }
@@ -101,6 +107,39 @@ namespace RaceGame
                 canMove = true;
             }
 
+        }
+
+        public void Checkpoint(int checkpoint)
+        {
+            Debug.Print(checkpoint + "");
+            Checkpoints[checkpoint] = 1;
+        }
+
+        public void Finish()
+        {
+            int check = 0;
+            foreach (int i in Checkpoints)
+            {
+                if (i == 1)
+                {
+                    check++;
+                }
+            }
+            if (check == 5)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    Checkpoints[i] = 0;
+                }
+                roundsElapsed++;
+            }
+            if (roundsElapsed == requiredRounds && winStop)
+            {
+                playerCar.maxSpeed = 0;
+                playerCar.currentSpeed = 0;
+                winStop = false;
+                MessageBox.Show(playerName + " Has won the race");
+            }
         }
 
         public void CompareInput(Keys keyToCompare)
@@ -210,7 +249,7 @@ namespace RaceGame
 
                 if (fuelRemaining > 0)
                 {
-                    fuelRemaining -= avg * 0.4f;
+                    fuelRemaining -= avg * 2.5f;
                 }
                 fuelCalcCounter = 0;
                 if (playerCar.currentSpeed < 0)
@@ -247,38 +286,34 @@ namespace RaceGame
                 }
                 fuelSlow = false;
             }
-            if (Engine.backBuffer != null)
+            Bitmap BackgroundImage = new Bitmap(Resources.Background, MainWindow.screenSize.Width, MainWindow.screenSize.Height);
+            pixelColor = BackgroundImage.GetPixel((int)(GetCarPos().X * GetScaleX() + (GetImageWidth() / 2) * GetScaleX()),
+                (int)(GetCarPos().Y * GetScaleY() + (GetImageHeight() / 2) * GetScaleY()));
+            if (pixelColor == Color.FromArgb(0, 0, 0, 0) && grassSlow == false)
             {
-                Bitmap BackgroundImage = new Bitmap(Resources.Background,MainWindow.screenSize.Width,MainWindow.screenSize.Height);
-                pixelColor = BackgroundImage.GetPixel((int)(GetCarPos().X * GetScaleX() + (GetImageWidth() / 2) * GetScaleX()),
-                    (int)(GetCarPos().Y * GetScaleY() + (GetImageHeight() / 2) * GetScaleY()));
-                if (pixelColor == Color.FromArgb(0, 0, 0, 0) && grassSlow == false)
+                if (fuelSlow)
                 {
-                    if (fuelSlow)
-                    {
-                        playerCar.maxSpeed = 2.5f;
-                    }
-                    else
-                    {
-                        playerCar.maxSpeed = 5f;
-                    }
-                    grassSlow = true;
+                    playerCar.maxSpeed = 2.5f;
                 }
-                else if (pixelColor != Color.FromArgb(0, 0, 0, 0) && grassSlow)
+                else
                 {
-                    switch (fuelSlow)
-                    {
-                        case true:
-                            playerCar.maxSpeed = 5f;
-                            break;
-                        case false:
-                            playerCar.maxSpeed = 10;
-                            break;
-                    }
-                    grassSlow = false;
+                    playerCar.maxSpeed = 5f;
                 }
+                grassSlow = true;
             }
-           
+            else if (pixelColor != Color.FromArgb(0, 0, 0, 0) && grassSlow)
+            {
+                switch (fuelSlow)
+                {
+                    case true:
+                        playerCar.maxSpeed = 5f;
+                        break;
+                    case false:
+                        playerCar.maxSpeed = 10;
+                        break;
+                }
+                grassSlow = false;
+            }
         }
     }
 }
